@@ -1,0 +1,373 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     14019,        365]
+NotebookOptionsPosition[     13386,        338]
+NotebookOutlinePosition[     13740,        354]
+CellTagsIndexPosition[     13697,        351]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+  "path", " ", "=", " ", 
+   "\"\</Users/diogofriggo/Google Drive/UFRGS 8o Semestre/METODOS \
+COMPUTACIONAIS C/github/Aula2_3108/Results/\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ts", " ", "=", " ", 
+   RowBox[{"{", 
+    RowBox[{
+    "2", ",", " ", "10", ",", " ", "50", ",", " ", "200", ",", " ", "1000", 
+     ",", " ", "2000"}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"legends", " ", "=", " ", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"\"\<t = \>\"", " ", "<>", " ", 
+      RowBox[{"ToString", "[", "t", "]"}]}], ",", 
+     RowBox[{"{", 
+      RowBox[{"t", ",", 
+       RowBox[{"{", 
+        RowBox[{
+        "2", ",", "10", ",", "50", ",", "100", ",", "200", ",", "1000", ",", 
+         "2000"}], "}"}]}], "}"}]}], "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.714318891435698*^9, 3.7143188941354733`*^9}, {
+  3.714318942128893*^9, 3.714318942826397*^9}, {3.714320255808016*^9, 
+  3.714320256604239*^9}, {3.714320443522153*^9, 3.7143204826391087`*^9}, {
+  3.714320945295266*^9, 3.71432096809855*^9}, {3.714322849480629*^9, 
+  3.7143228819108257`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"data1", " ", "=", " ", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"Import", "[", 
+        RowBox[{
+         RowBox[{"path", " ", "<>", " ", 
+          RowBox[{"ToString", "[", 
+           RowBox[{"StringForm", "[", 
+            RowBox[{"\"\<CDiffusionExample1K``t``.txt\>\"", ",", " ", 
+             RowBox[{"ToString", "[", 
+              RowBox[{"NumberForm", "[", 
+               RowBox[{"k", ",", 
+                RowBox[{"{", 
+                 RowBox[{"2", ",", "1"}], "}"}]}], "]"}], "]"}], ",", " ", 
+             RowBox[{"ts", "[", 
+              RowBox[{"[", "t", "]"}], "]"}]}], "]"}], "]"}]}], ",", " ", 
+         RowBox[{"{", "\"\<Table\>\"", "}"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"t", ",", "1", ",", "6", ",", "1"}], "}"}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"k", ",", "0.1", ",", "1.0", ",", "0.1"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{"ListLinePlot", "[", 
+    RowBox[{
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"data1", "[", 
+         RowBox[{"[", "k", "]"}], "]"}], "[", 
+        RowBox[{"[", "t", "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"t", ",", "1", ",", "6", ",", "1"}], "}"}]}], "]"}], ",", 
+     RowBox[{"PlotLegends", "\[Rule]", "legends"}], ",", " ", 
+     RowBox[{"PlotLabel", "\[Rule]", " ", 
+      RowBox[{"\"\<L = 100 K = \>\"", " ", "<>", " ", 
+       RowBox[{"ToString", "[", 
+        RowBox[{"k", "/", "10."}], "]"}]}]}]}], "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"k", ",", "1", ",", "10", ",", "1"}], "}"}]}], "]"}]}], "Input",
+ CellChangeTimes->{{3.714318891435698*^9, 3.7143188941354733`*^9}, {
+  3.714318942128893*^9, 3.714318942826397*^9}, {3.714320255808016*^9, 
+  3.714320256604239*^9}, {3.714320443522153*^9, 3.7143204826391087`*^9}, {
+  3.714320945295266*^9, 3.71432096809855*^9}, {3.714322849480629*^9, 
+  3.714322878649418*^9}}],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`k$$ = 1, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
+      Hold[$CellContext`k$$], 1, 10, 1}}, Typeset`size$$ = {
+    455., {119., 123.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`k$55493$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {$CellContext`k$$ = 1}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`k$$, $CellContext`k$55493$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> ListLinePlot[
+        Table[
+         Part[
+          
+          Part[$CellContext`data1, $CellContext`k$$], $CellContext`t], \
+{$CellContext`t, 1, 6, 1}], PlotLegends -> $CellContext`legends, PlotLabel -> 
+        StringJoin["L = 100 K = ", 
+          ToString[$CellContext`k$$/10.]]], 
+      "Specifications" :> {{$CellContext`k$$, 1, 10, 1}}, "Options" :> {}, 
+      "DefaultOptions" :> {}],
+     ImageSizeCache->{500., {177., 183.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{{3.7143189350247383`*^9, 3.714318945037345*^9}, 
+   3.714319817401874*^9, {3.7143202592315197`*^9, 3.714320264225294*^9}, 
+   3.714320333852759*^9, 3.7143204163576603`*^9, 3.714320621673564*^9, 
+   3.714320661357329*^9, 3.7143209796178513`*^9, 3.7143228860682898`*^9}]
+}, Open  ]],
+
+Cell[BoxData[" "], "Input",
+ CellChangeTimes->{3.714319827881921*^9}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"data2", " ", "=", " ", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"Import", "[", 
+        RowBox[{
+         RowBox[{"path", " ", "<>", " ", 
+          RowBox[{"ToString", "[", 
+           RowBox[{"StringForm", "[", 
+            RowBox[{"\"\<CDiffusionExample2K``t``.txt\>\"", ",", " ", 
+             RowBox[{"ToString", "[", 
+              RowBox[{"NumberForm", "[", 
+               RowBox[{"k", ",", 
+                RowBox[{"{", 
+                 RowBox[{"2", ",", "1"}], "}"}]}], "]"}], "]"}], ",", " ", 
+             RowBox[{"ts", "[", 
+              RowBox[{"[", "t", "]"}], "]"}]}], "]"}], "]"}]}], ",", " ", 
+         RowBox[{"{", "\"\<Table\>\"", "}"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"t", ",", "1", ",", "6", ",", "1"}], "}"}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"k", ",", "0.1", ",", "1.0", ",", "0.1"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{"ListLinePlot", "[", 
+    RowBox[{
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"data2", "[", 
+         RowBox[{"[", "k", "]"}], "]"}], "[", 
+        RowBox[{"[", "t", "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"t", ",", "1", ",", "6", ",", "1"}], "}"}]}], "]"}], ",", 
+     RowBox[{"PlotLegends", "\[Rule]", "legends"}], ",", " ", 
+     RowBox[{"PlotLabel", "\[Rule]", " ", 
+      RowBox[{"\"\<L = 100 K = \>\"", " ", "<>", " ", 
+       RowBox[{"ToString", "[", 
+        RowBox[{"k", "/", "10."}], "]"}]}]}]}], "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"k", ",", "1", ",", "10", ",", "1"}], "}"}]}], "]"}]}], "Input",
+ CellChangeTimes->{{3.714320954293524*^9, 3.714320975060383*^9}, {
+  3.714322842535852*^9, 3.714322845605647*^9}}],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`k$$ = 10, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
+      Hold[$CellContext`k$$], 1, 10, 1}}, Typeset`size$$ = {
+    455., {97., 102.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`k$58334$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {$CellContext`k$$ = 1}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`k$$, $CellContext`k$58334$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> ListLinePlot[
+        Table[
+         Part[
+          
+          Part[$CellContext`data2, $CellContext`k$$], $CellContext`t], \
+{$CellContext`t, 1, 6, 1}], PlotLegends -> $CellContext`legends, PlotLabel -> 
+        StringJoin["L = 100 K = ", 
+          ToString[$CellContext`k$$/10.]]], 
+      "Specifications" :> {{$CellContext`k$$, 1, 10, 1}}, "Options" :> {}, 
+      "DefaultOptions" :> {}],
+     ImageSizeCache->{500., {156., 162.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{{3.714320958409025*^9, 3.714320976423986*^9}, 
+   3.714322801142446*^9, 3.714322888122023*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"data3", " ", "=", " ", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"Import", "[", 
+        RowBox[{
+         RowBox[{"path", " ", "<>", " ", 
+          RowBox[{"ToString", "[", 
+           RowBox[{"StringForm", "[", 
+            RowBox[{"\"\<CDiffusionPCBK``t``.txt\>\"", ",", " ", 
+             RowBox[{"ToString", "[", 
+              RowBox[{"NumberForm", "[", 
+               RowBox[{"k", ",", 
+                RowBox[{"{", 
+                 RowBox[{"2", ",", "1"}], "}"}]}], "]"}], "]"}], ",", " ", 
+             RowBox[{"ts", "[", 
+              RowBox[{"[", "t", "]"}], "]"}]}], "]"}], "]"}]}], ",", " ", 
+         RowBox[{"{", "\"\<Table\>\"", "}"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"t", ",", "1", ",", "6", ",", "1"}], "}"}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"k", ",", "0.1", ",", "1.0", ",", "0.1"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{"ListLinePlot", "[", 
+    RowBox[{
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"data3", "[", 
+         RowBox[{"[", "k", "]"}], "]"}], "[", 
+        RowBox[{"[", "t", "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"t", ",", "1", ",", "6", ",", "1"}], "}"}]}], "]"}], ",", 
+     RowBox[{"PlotLegends", "\[Rule]", "legends"}], ",", " ", 
+     RowBox[{"PlotLabel", "\[Rule]", " ", 
+      RowBox[{"\"\<L = 100 K = \>\"", " ", "<>", " ", 
+       RowBox[{"ToString", "[", 
+        RowBox[{"k", "/", "10."}], "]"}]}]}]}], "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"k", ",", "1", ",", "10", ",", "1"}], "}"}]}], "]"}]}], "Input",
+ CellChangeTimes->{{3.714322776181199*^9, 3.714322795452433*^9}, {
+  3.714322893421015*^9, 3.7143228953657093`*^9}}],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`k$$ = 10, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
+      Hold[$CellContext`k$$], 1, 10, 1}}, Typeset`size$$ = {
+    455., {97., 102.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`k$61270$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {$CellContext`k$$ = 1}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`k$$, $CellContext`k$61270$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> ListLinePlot[
+        Table[
+         Part[
+          
+          Part[$CellContext`data3, $CellContext`k$$], $CellContext`t], \
+{$CellContext`t, 1, 6, 1}], PlotLegends -> $CellContext`legends, PlotLabel -> 
+        StringJoin["L = 100 K = ", 
+          ToString[$CellContext`k$$/10.]]], 
+      "Specifications" :> {{$CellContext`k$$, 1, 10, 1}}, "Options" :> {}, 
+      "DefaultOptions" :> {}],
+     ImageSizeCache->{500., {156., 162.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{{3.714322785906266*^9, 3.714322797010701*^9}, 
+   3.7143228968656883`*^9}]
+}, Open  ]]
+},
+WindowSize->{1920, 1031},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"11.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (July 28, \
+2016)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 1149, 29, 75, "Input"],
+Cell[CellGroupData[{
+Cell[1732, 53, 2016, 49, 54, "Input"],
+Cell[3751, 104, 2066, 42, 377, "Output"]
+}, Open  ]],
+Cell[5832, 149, 69, 1, 32, "Input"],
+Cell[CellGroupData[{
+Cell[5926, 154, 1820, 46, 54, "Input"],
+Cell[7749, 202, 1892, 40, 335, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[9678, 247, 1817, 46, 54, "Input"],
+Cell[11498, 295, 1872, 40, 369, "Output"]
+}, Open  ]]
+}
+]
+*)
+
