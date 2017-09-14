@@ -19,7 +19,7 @@ int main(int argc, const char * argv[]) {
 }
 
 void once(){
-    int i, L = 2, t;
+    int i, L = 100, t;
     double k = 0.5;
     double dt = 0.1, dx = 1;
     //if time is divided in intervals of 0.1 between 0 and 100 then nTs = [0, 0.1, ... , 999.9] -> 1000 steps
@@ -47,11 +47,13 @@ void once(){
     nTs = (int)round(1000/dt);
     for(t = 0; t < nTs; t++){
         thomasSolveTridiagonalMatrix(nXs, rightA, rightB, rightC, rightD, rightX);
-        //copy(nXs, leftD, rightX);
-        leftD = rightX;
+        copy(nXs, leftD, rightX);
+        //leftD = rightX;
+
         thomasSolveTridiagonalMatrix(nXs, leftA, leftB, leftC, leftD, leftX);
-        //copy(nXs, rightD, leftX);
-        rightD = leftX;
+
+        copy(nXs, rightD, leftX);
+        //rightD = leftX;
         if(t == 0)
             for(i = 0; i < nXs; i++)
                 printf("%d: %.4f%s", i, leftD[i], i % 10 == 0 ? "\n" : " ");
@@ -72,7 +74,7 @@ void once(){
 void copy(int n, double *d, double *x){
     int i;
     for(i = 0; i < n; i++)
-        d[n] = x[n];
+        d[i] = x[i];
 }
 
 void nonStationaryDiffusion(){
