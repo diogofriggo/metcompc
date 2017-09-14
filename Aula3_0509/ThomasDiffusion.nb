@@ -1,19 +1,12 @@
-(* Content-type: application/vnd.wolfram.mathematica *)
-
-(*** Wolfram Notebook File ***)
-(* http://www.wolfram.com/nb *)
-
-(* CreatedBy='Mathematica 11.0' *)
-
 (*CacheID: 234*)
 (* Internal cache information:
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
-NotebookDataPosition[       158,          7]
-NotebookDataLength[      6568,        175]
-NotebookOptionsPosition[      6203,        157]
-NotebookOutlinePosition[      6557,        173]
-CellTagsIndexPosition[      6514,        170]
+NotebookDataPosition[         0,          0]
+NotebookDataLength[      6665,        176]
+NotebookOptionsPosition[      6142,        151]
+NotebookOutlinePosition[      6496,        167]
+CellTagsIndexPosition[      6453,        164]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -32,7 +25,7 @@ Cell[BoxData[
     RowBox[{
     "path", " ", "=", " ", 
      "\"\</Users/diogofriggo/Google Drive/UFRGS 8o Semestre/METODOS \
-COMPUTACIONAIS C/github/Aula3_0509/Results/\>\""}], ";"}], 
+COMPUTACIONAIS C/metcompc/Aula3_0509/Results/\>\""}], ";"}], 
    "\[IndentingNewLine]", 
    RowBox[{
     RowBox[{"ts", " ", "=", " ", 
@@ -103,7 +96,8 @@ COMPUTACIONAIS C/github/Aula3_0509/Results/\>\""}], ";"}],
    3.71430596410157*^9}, {3.714306498899261*^9, 3.714306512394903*^9}, {
    3.714306569286789*^9, 3.714306591022929*^9}, {3.714306631567493*^9, 
    3.7143066349082403`*^9}, {3.714307018479643*^9, 3.7143070360963097`*^9}, {
-   3.7143170554915953`*^9, 3.7143170603205767`*^9}}],
+   3.7143170554915953`*^9, 3.7143170603205767`*^9}, {3.714326058118402*^9, 
+   3.714326059183058*^9}}],
 
 Cell[BoxData[
  TagBox[
@@ -114,11 +108,11 @@ Cell[BoxData[
     "\"untitled\"", Typeset`specs$$ = {{
       Hold[$CellContext`k$$], 1, 10, 1}}, Typeset`size$$ = {
     455., {119., 123.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
-    Typeset`skipInitDone$$ = True, $CellContext`k$69742$$ = 0}, 
+    Typeset`skipInitDone$$ = True, $CellContext`k$127413$$ = 0}, 
     DynamicBox[Manipulate`ManipulateBoxes[
      1, StandardForm, "Variables" :> {$CellContext`k$$ = 1}, 
       "ControllerVariables" :> {
-        Hold[$CellContext`k$$, $CellContext`k$69742$$, 0]}, 
+        Hold[$CellContext`k$$, $CellContext`k$127413$$, 0]}, 
       "OtherVariables" :> {
        Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
         Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
@@ -148,7 +142,7 @@ Cell[BoxData[
    3.714305866966392*^9, 3.714305965559772*^9, {3.714306504521901*^9, 
    3.714306514662978*^9}, 3.7143065980009212`*^9, 3.71430664942622*^9, 
    3.7143070169523783`*^9, 3.714317064352502*^9, {3.7143229746457243`*^9, 
-   3.714322999748485*^9}}]
+   3.714322999748485*^9}, 3.714327527739341*^9, 3.71433129244205*^9}]
 }, Open  ]],
 
 Cell[BoxData["\[IndentingNewLine]"], "Input",
@@ -173,10 +167,10 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[580, 22, 3375, 83, 138, "Input"],
-Cell[3958, 107, 2087, 43, 377, "Output"]
+Cell[422, 15, 3427, 84, 138, "Input"],
+Cell[3852, 101, 2132, 43, 411, "Output"]
 }, Open  ]],
-Cell[6060, 153, 139, 2, 54, "Input"]
+Cell[5999, 147, 139, 2, 54, "Input"]
 }
 ]
 *)

@@ -117,7 +117,7 @@ void nonStationaryDiffusion(){
 }
 
 void reportNonStationaryDiffusion(double *x, int nXs, double dx, double k, double maxT){
-    char path[200] = "/Users/diogofriggo/Google Drive/UFRGS 8o Semestre/METODOS COMPUTACIONAIS C/github/Aula4_1209/Results/";
+    char path[200] = "/Users/diogofriggo/Google Drive/UFRGS 8o Semestre/METODOS COMPUTACIONAIS C/metcompc/Aula4_1209/Results/";
     char name[50];
     sprintf(name, "CCrankDiffusionK%.1ft%.0f.txt", k, maxT);
     strcat(path, name);
