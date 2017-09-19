@@ -6,7 +6,7 @@
 void nonStationaryDiffusion();
 void describeLeftMatrix(double k, int nXs, double a[nXs-1], double b[nXs], double c[nXs-1], double d[nXs]);
 void describeRightMatrix(double k, int nXs, double a[nXs-1], double b[nXs], double c[nXs-1], double d[nXs]);
-void runNonStationaryDiffusion(double *a, double *b, double *c, double *d, double *x, int nXs, int nTs, double k);
+void runNonStationaryDiffusion(double *a, double *b, double *c, double *d, double *x, int nXs, int nTs, double k, double x0, double xl);
 void reportNonStationaryDiffusion(double *x, int nXs, double dx, double k, double maxT);
 void thomasSolveTridiagonalMatrix(int n, double a[n-2], double b[n], double c[n-1], double d[n], double x[n]);
 void once();
@@ -25,6 +25,8 @@ void once(){
     //if time is divided in intervals of 0.1 between 0 and 100 then nTs = [0, 0.1, ... , 999.9] -> 1000 steps
     //if space is divided in intervals of 0.1 between 0 and 100 then nXs = [0, 0.1, ... , 999.9, 1000] -> 1001 positions
     int nTs, nXs = (int)round(L/dx) + 1;
+    
+    double x0 = 1, xl = 0;
     
     double *leftA, *leftB, *leftC, *leftD, *leftX;
     double *rightA, *rightB, *rightC, *rightD, *rightX;
@@ -47,6 +49,13 @@ void once(){
     nTs = (int)round(1000/dt);
     for(t = 0; t < nTs; t++){
         thomasSolveTridiagonalMatrix(nXs, rightA, rightB, rightC, rightD, rightX);
+        
+        //should I do it here?
+        copy(nXs, rightD, leftX);
+        d[0] = x[0] + k*x0;
+        d[nXs-1] = x[nXs-1] + k*xl;
+
+        
         copy(nXs, leftD, rightX);
         //leftD = rightX;
 
@@ -119,7 +128,7 @@ void nonStationaryDiffusion(){
 }
 
 void reportNonStationaryDiffusion(double *x, int nXs, double dx, double k, double maxT){
-    char path[200] = "/Users/diogofriggo/Google Drive/UFRGS 8o Semestre/METODOS COMPUTACIONAIS C/metcompc/Aula4_1209/Results/";
+    char path[200] = "/Users/diogofriggo/Google Drive/UFRGS 8o Semestre/METODOS/metcompc/Aula4_1209/Results/";
     char name[50];
     sprintf(name, "CCrankDiffusionK%.1ft%.0f.txt", k, maxT);
     strcat(path, name);
@@ -130,9 +139,9 @@ void reportNonStationaryDiffusion(double *x, int nXs, double dx, double k, doubl
     fclose(file);
 }
 
-void runNonStationaryDiffusion(double *a, double *b, double *c, double *d, double *x, int nXs, int nTs, double k){
+void runNonStationaryDiffusion(double *a, double *b, double *c, double *d, double *x, int nXs, int nTs, double k, double x0, double xl){
     //describeNonStationaryDiffusionBoundaryConditions(k, nXs, a, b, c, d);
-    int t;
+    int t, i;
     for(t = 0; t < nTs; t++){
         thomasSolveTridiagonalMatrix(nXs, a, b, c, d, x);
         d = x;
@@ -175,7 +184,7 @@ void describeRightMatrix(double k, int nXs, double a[nXs-1], double b[nXs], doub
     //specifying left boundary condition
     b[0] = 1;
     c[0] = 0;
-    d[0] = 1;
+    d[0] = 0.5; //WARNING: CHANGED FROM 1 TO 0.5 1809
     
     //specifying right boundary condition
     a[nXs-2] = 0;
@@ -200,6 +209,7 @@ void thomasSolveTridiagonalMatrix(int n, double a[n-1], double b[n], double c[n-
         c_[i] = c[i]/denominator;
         d_[i] = (d[i]-d_[i-1]*a[i-1])/denominator;
     }
+    
     //d[] has one further step:
     denominator = b[n-1]-c_[n-2]*a[n-2];
     d_[n-1] = (d[n-1]-d_[n-2]*a[n-2])/denominator;
