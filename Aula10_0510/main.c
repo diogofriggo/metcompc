@@ -2,73 +2,81 @@
 #include <math.h>
 #include <stdlib.h>
 
-double a(double x0, double y0, double x1, double y1, double k);
+#define X 0
+#define Y 1
+#define Z 2
+
+double a_x(double *x, double *y, int i, int j, double kk);
+double a_y(double *x, double *y, int i, int j, double kk);
 
 int main()
 {
     //char path[200] = "/Users/diogofriggo/Google Drive/UFRGS 8o Semestre/METODOS/metcompc/Aula9_0310/Results/ManySprings.txt";    
-    int t, i, j, n = 2;
+	//n -> particles
+	//d -> dimensions
+    int t, i, j, k, n = 2, d = 2;
 	double dt = 0.1, tmax = 200;
-	double m1 = 1., m2 = 1., d = 1., k = 1., b = 1.;
-	double vh_x[2], vh_y[2];
-	double v_x[2], v_y[2];
-	double x[2], y[2];
-	for(i = 1; i < n-1; i++)
-	{
-		vh_x[i] = 0.;
-		vh_y[i] = 0.;
-		v_x[i] = 0.;
-		v_y[i] = 0.;
-		x[i] = 0.;
-		y[i] = 0.;
-	}
+	double kk = 1., b = 1.;
+	double m[n];
+	double vh[n][d];
+	double v[n][d];
+	double r[n][d];
+	for(i = 0; i < n; i++)
+		for(k = 0; k < d; i++)
+		{
+			vh[i][k] = 0.;
+			v[i][k] = 0.;
+			r[i][k] = 0.;
+		}
 	//particle 0 starts at (0,b)
 	//particle 1 starts at (10,0)
-	y[0] = b;
-	x[1] = 10.;
-	v_x[0] = 1.;
+	r[0][Y] = b;
+	r[1][X] = 10.;
+	v[0][X] = 1.;
     
     FILE *file = fopen("data.txt", "w");
     for(t = 0; t < tmax; t++)
     {
 		//Report
-        fprintf(file, "%.2f %.2f %.2f %.2f\n", x[0], y[0], x[1], y[1]);
+		for(i = 0; i < n; i++)
+        	fprintf(file, "%.2f %.2f ", x[i], y[i]);
+		fprintf(file, "\n");
         
-        //Velocity-verlet
-		vh_x[0] = v_x[0] + a(x[0], y[0], x[1], y[1], k)*dt/2.;
-		vh_y[0] = v_y[0] + a(x[0], y[0], x[1], y[1], k)*dt/2.;
-		vh_x[1] = v_x[1] + a(x[1], y[1], x[0], y[0], k)*dt/2.;
-		vh_y[1] = v_y[1] + a(x[1], y[1], x[0], y[0], k)*dt/2.;
-		//for(i = 0; i < n; i++)
-		//{
-        //    vh_x[i] = v_x[i] + a(x, y, k)*dt/2.;
-		//	vh_y[i] = v_y[i] + a(x, y, k)*dt/2.;
-		//}
+        //Velocity-verlet, TODO: generalize such loops
+		for(i = 0; i < n; i++) //for each particle
+			for(j = 0; j < n; j++) //for each other particle
+				if(j != i)
+					for(k = 0; k < d; k++)	//for each dimension
+						vh[i][k] = v[i][k] + a_x(x, y, i, j, kk)*dt/2.;
+
         for(i = 0; i < n; i++)
-		{
-            x[i] = x[i] + vh_x[i]*dt;
-            y[i] = y[i] + vh_y[i]*dt;
-		}
-        //for(i = 0; i < n; i++)
-		//{
-        //	v_x[i] = vh_x[i] + a(y, x, k)*dt/2.;
-		//	v_y[i] = vh_y[i] + a(x, y, k)*dt/2.;
-		//}
-		v_x[0] = vh_x[0] + a(x[0], y[0], x[1], y[1], k)*dt/2.;
-		v_y[0] = vh_y[0] + a(x[0], y[0], x[1], y[1], k)*dt/2.;
-		v_x[1] = vh_x[1] + a(x[1], y[1], x[0], y[0], k)*dt/2.;
-		v_y[1] = vh_y[1] + a(x[1], y[1], x[0], y[0], k)*dt/2.;
+			for(k = 0; k < d; k++)	//for each dimension
+	            r[i][k] = r[i][k] + vh[i][k]*dt;
+
+		for(i = 0; i < n; i++) //for each particle
+			for(j = 0; j < n; j++) //for each other particle
+				if(j != i)
+					for(k = 0; k < d; k++)	//for each dimension
+						v[i][k] = vh[i][k] + a_x(x, y, i, j, kk)*dt/2.;
     }
     fclose(file);
     return 0;
 }
-//a_x, a_y
-double a(double x0, double y0, double x1, double y1, double k)
+
+double a_x(double *x, double *y, int i, int j, double kk)
 {
-	double xt = x0-x1;
-	double yt = y0-y1;
-	double r = sqrt(pow(xt,2.)+pow(yt,2.));
-	return -k*r/pow(r,3.);
+	double dx = x[j]-x[i];
+	double dy = y[j]-y[i];
+	double m = pow(pow(dx,2.)+pow(dy,2.),3./2.);
+	return -k*dx/m;
+}
+
+double a_y(double *x, double *y, int i, int j, double kk)
+{
+	double dx = x[j]-x[i];
+	double dy = y[j]-y[i];
+	double m = pow(pow(dx,2.)+pow(dy,2.),3./2.);
+	return -k*dy/m;
 }
 
 
