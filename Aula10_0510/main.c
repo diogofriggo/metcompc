@@ -6,23 +6,23 @@
 #define Y 1
 #define Z 2
 
-double a_x(double *x, double *y, int i, int j, double kk);
-double a_y(double *x, double *y, int i, int j, double kk);
+double a(int i, int j, int k, int d, double r[][d], double k_constant);
 
 int main()
 {
     //char path[200] = "/Users/diogofriggo/Google Drive/UFRGS 8o Semestre/METODOS/metcompc/Aula9_0310/Results/ManySprings.txt";    
 	//n -> particles
 	//d -> dimensions
-    int t, i, j, k, n = 2, d = 2;
+    int t, i, j, k;
+	const int n = 2, d = 2;
 	double dt = 0.1, tmax = 200;
-	double kk = 1., b = 1.;
+	double k_constant = 1., b = 1.;
 	double m[n];
 	double vh[n][d];
 	double v[n][d];
 	double r[n][d];
 	for(i = 0; i < n; i++)
-		for(k = 0; k < d; i++)
+		for(k = 0; k < d; k++)
 		{
 			vh[i][k] = 0.;
 			v[i][k] = 0.;
@@ -38,47 +38,42 @@ int main()
     for(t = 0; t < tmax; t++)
     {
 		//Report
-		for(i = 0; i < n; i++)
-        	fprintf(file, "%.2f %.2f ", x[i], y[i]);
+        for(i = 0; i < n; i++) 						//for each particle
+			for(k = 0; k < d; k++)					//for each dimension
+	        	fprintf(file, "%.2f ", r[i][k]);
 		fprintf(file, "\n");
         
-        //Velocity-verlet, TODO: generalize such loops
-		for(i = 0; i < n; i++) //for each particle
-			for(j = 0; j < n; j++) //for each other particle
+        //Velocity-verlet
+		//TODO: generalize this loop...
+		for(i = 0; i < n; i++) 						//for each particle
+			for(j = 0; j < n; j++) 					//for each other particle
 				if(j != i)
-					for(k = 0; k < d; k++)	//for each dimension
-						vh[i][k] = v[i][k] + a_x(x, y, i, j, kk)*dt/2.;
+					for(k = 0; k < d; k++)			//for each dimension
+						vh[i][k] = v[i][k] + a(i, j, k, d, r, k_constant)*dt/2.;
 
-        for(i = 0; i < n; i++)
-			for(k = 0; k < d; k++)	//for each dimension
+        for(i = 0; i < n; i++) 						//for each particle
+			for(k = 0; k < d; k++)					//for each dimension
 	            r[i][k] = r[i][k] + vh[i][k]*dt;
 
-		for(i = 0; i < n; i++) //for each particle
-			for(j = 0; j < n; j++) //for each other particle
+		//TODO: ...and this loop into one?
+		for(i = 0; i < n; i++) 						//for each particle
+			for(j = 0; j < n; j++) 					//for each other particle
 				if(j != i)
-					for(k = 0; k < d; k++)	//for each dimension
-						v[i][k] = vh[i][k] + a_x(x, y, i, j, kk)*dt/2.;
+					for(k = 0; k < d; k++)			//for each dimension
+						v[i][k] = vh[i][k] + a(i, j, k, d, r, k_constant)*dt/2.;
     }
     fclose(file);
     return 0;
 }
 
-double a_x(double *x, double *y, int i, int j, double kk)
+double a(int i, int j, int k, int d, double r[][d], double k_constant)
 {
-	double dx = x[j]-x[i];
-	double dy = y[j]-y[i];
-	double m = pow(pow(dx,2.)+pow(dy,2.),3./2.);
-	return -k*dx/m;
+	int l;
+	double m = 0.;
+	for(l = 0; l < d; l++)
+		m += pow(r[j][l] - r[i][l],2.);
+	return -k_constant*(r[j][k]-r[i][k])/pow(m,3./2.);
 }
-
-double a_y(double *x, double *y, int i, int j, double kk)
-{
-	double dx = x[j]-x[i];
-	double dy = y[j]-y[i];
-	double m = pow(pow(dx,2.)+pow(dy,2.),3./2.);
-	return -k*dy/m;
-}
-
 
 
 
