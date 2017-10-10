@@ -10,5 +10,5 @@ for it=1:itmax
     vy = vy + h * (fy + fyi);
     reflete0;
     plot(x, y, 'o')
-    %pause(0.01)%
+    pause(0.01)%
 end
