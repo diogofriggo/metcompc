@@ -26,6 +26,60 @@ def heaviside(x):
     y[x > 0] = 1.0
     return y
 
+def f1(x):
+    return 3.*np.sqrt(-(x/7.)**2.+1.)
+
+def f2(x):
+    return -f1(x)
+
+def f3(x):
+    return np.abs(x/2.)-((3.*np.sqrt(33.)-7.)*x**2.)/112.+np.sqrt(1.-(np.abs(np.abs(x)-2.)-1.)**2.)-3.
+
+def f4(x):
+    return 9.-8.*np.abs(x)
+
+def f5(x):
+    return 3.*np.abs(x)+.75
+
+def f6(x):
+    return 2.25
+
+def f7(x):
+    return 1.5 - .5*np.abs(x)-6.*np.sqrt(10.)*(np.sqrt(3.-x**2.+2.*np.abs(x))-2.)/14.
+
+def top(x):
+    if(np.abs(x) > 7.):
+        return 0.
+    if(np.abs(x) > 3.):
+        return f1(x)
+    if(np.abs(x) > .75 and abs(x) < 1.):
+        return f4(x)
+    if(np.abs(x) < .5):
+        return f6(x)
+    if(np.abs(x) > 1.):
+        return f7(x)
+
+def bottom(x):
+    if(np.abs(x) > 7.):
+        return 0.
+    if(np.abs(x) < 4):
+        return f3(x)
+    if(np.abs(x) >= 4):
+        return f2(x)
+
+def batman_barrier(x,width):
+    x,y = np.asarray(x), np.zeros(x.shape)
+    for i in range(len(x)):
+        #if(i%2==0):
+        #    y[i] = bottom(x[i])
+        #else:
+        #    y[i] = top(x[i])
+        y[i] = bottom(x[i])
+        y[i] += 3
+    y[x < -width] = 0.
+    y[x > width] = 0.
+    return y
+
 def triangular_barrier(x, width, height):
     x,y = np.asarray(x), np.zeros(x.shape)
     y[x < 0] = (height/width)*x[x < 0] + height
@@ -44,16 +98,17 @@ def gauss_x(x, d, x0, k0):
 dt, N_steps, t_max = 0.005, 50, 460
 hbar, m, N, dx = 1.0, 1.0, 2 ** 11, 0.1
 x = dx * (np.arange(N) - 0.5 * N)
-V0 = 1.5
+V0 = 3.5
 L = hbar / np.sqrt(2 * m * V0)
 a, x0 = 3 * L, -60 * L
 #V_x = square_barrier(x, a, V0)
-V_x = triangular_barrier(x, 3.5, V0)
+#V_x = triangular_barrier(x, 3.5, V0)
+V_x = batman_barrier(x,7)
 #print(*V_x)
 V_x[x < -100] = 1E6
 V_x[x > 100] = 1E6
 #changed 0.2 to 0.4
-p0 = np.sqrt(2 * m * 0.4 * V0)
+p0 = np.sqrt(2 * m * 0.8 * V0)
 d = hbar / np.sqrt(2 * p0 ** 2. * 1./80)
 psi_x0 = gauss_x(x,d,x0,p0/hbar)
 k0, t = -28, 0.0
@@ -98,7 +153,7 @@ writeToFile();exit()
 fig = pl.figure()
 
 # plotting limits
-xlim = (-100, 100)
+xlim = (-10, 10)
 klim = (-5, 5)
 
 # top axes show the x-space data
