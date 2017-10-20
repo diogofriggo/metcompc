@@ -1,0 +1,34 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c}{(*an alternative and completely equivalent way to compute the dft is commented in the middle*)}
+\PYG{c}{(*it makes the operations matrix\PYGZhy{}wise, matlab\PYGZhy{}style instead of \PYGZdq{}nth element\PYGZhy{}wise\PYGZdq{}*)}
+\PYG{n}{dft}\PYG{p}{[}\PYG{n+nv}{ts\PYGZus{}List}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nv}{fs\PYGZus{}List}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{p}{(}
+\PYG{+w}{  }\PYG{n}{l}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Length}\PYG{p}{[}\PYG{n}{ts}\PYG{p}{];}
+\PYG{+w}{  }\PYG{n}{dt}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Abs}\PYG{o}{@}\PYG{n}{ts}\PYG{p}{[[}\PYG{l+m+mi}{2}\PYG{p}{]]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{Abs}\PYG{o}{@}\PYG{n}{ts}\PYG{p}{[[}\PYG{l+m+mi}{1}\PYG{p}{]]}\PYG{+w}{ }\PYG{o}{//}\PYG{+w}{ }\PYG{n}{Abs}\PYG{p}{;}
+\PYG{+w}{  }\PYG{n}{w0}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{n}{Pi}\PYG{o}{/}\PYG{n}{dt}\PYG{p}{;}
+\PYG{+w}{  }\PYG{n}{ws}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Array}\PYG{p}{[}\PYG{n+nv}{\PYGZsh{}}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{l}\PYG{p}{,}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{o}{\PYGZhy{}}\PYG{n}{Abs}\PYG{o}{@}\PYG{n}{w0}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{Abs}\PYG{o}{@}\PYG{n}{w0}\PYG{p}{\PYGZcb{}];}
+\PYG{+w}{  }\PYG{n}{dw}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Abs}\PYG{o}{@}\PYG{n}{ws}\PYG{p}{[[}\PYG{l+m+mi}{2}\PYG{p}{]]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{Abs}\PYG{o}{@}\PYG{n}{ws}\PYG{p}{[[}\PYG{l+m+mi}{1}\PYG{p}{]]}\PYG{+w}{ }\PYG{o}{//}\PYG{+w}{ }\PYG{n}{Abs}\PYG{p}{;}
+\PYG{+w}{  }\PYG{n}{t0}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{ts}\PYG{p}{[[}\PYG{l+m+mi}{1}\PYG{p}{]]}\PYG{+w}{ }\PYG{p}{;}
+\PYG{+w}{  }\PYG{n}{gs}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Table}\PYG{p}{[}
+\PYG{+w}{     }\PYG{n}{Total}\PYG{o}{@}\PYG{n}{Table}\PYG{p}{[}
+\PYG{+w}{       }\PYG{n}{fs}\PYG{p}{[[}\PYG{n}{k}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{]]}\PYG{+w}{ }\PYG{n}{Exp}\PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{n}{I}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{w0}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{n}\PYG{o}{*}\PYG{n}{dw}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{t0}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{k}\PYG{o}{*}\PYG{n}{dt}\PYG{p}{)],}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{n}{k}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{,}
+\PYG{+w}{        }\PYG{n}{l}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{\PYGZcb{}],}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{n}{n}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{l}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{\PYGZcb{}]}\PYG{o}{/}\PYG{n}{Sqrt}\PYG{p}{[}\PYG{n}{l}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{];}
+\PYG{+w}{  }\PYG{c}{(*gs = Exp[\PYGZhy{}\PYGZbs{}[ImaginaryI]*Outer[Times,ws,ts]].fs/Sqrt[l\PYGZhy{}1];*)}
+
+\PYG{+w}{  }\PYG{n}{grpts}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Riffle}\PYG{p}{[}\PYG{n}{ws}\PYG{+w}{ }\PYG{o}{//}\PYG{+w}{ }\PYG{n}{N}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{Re}\PYG{o}{@}\PYG{n}{gs}\PYG{+w}{ }\PYG{o}{//}\PYG{+w}{ }\PYG{n}{N}\PYG{p}{]}\PYG{err}{\PYGZti{}}\PYG{n}{Partition}\PYG{err}{\PYGZti{}}\PYG{l+m+mi}{2}\PYG{p}{;}
+\PYG{+w}{  }\PYG{n}{gipts}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Riffle}\PYG{p}{[}\PYG{n}{ws}\PYG{+w}{ }\PYG{o}{//}\PYG{+w}{ }\PYG{n}{N}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{Im}\PYG{o}{@}\PYG{n}{gs}\PYG{+w}{ }\PYG{o}{//}\PYG{+w}{ }\PYG{n}{N}\PYG{p}{]}\PYG{err}{\PYGZti{}}\PYG{n}{Partition}\PYG{err}{\PYGZti{}}\PYG{l+m+mi}{2}\PYG{p}{;}
+\PYG{+w}{  }\PYG{n}{fpts}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Riffle}\PYG{p}{[}\PYG{n}{ts}\PYG{+w}{ }\PYG{o}{//}\PYG{+w}{ }\PYG{n}{N}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{fs}\PYG{+w}{ }\PYG{o}{//}\PYG{+w}{ }\PYG{n}{N}\PYG{p}{]}\PYG{err}{\PYGZti{}}\PYG{n}{Partition}\PYG{err}{\PYGZti{}}\PYG{l+m+mi}{2}\PYG{p}{;}
+\PYG{+w}{  }\PYG{p}{\PYGZob{}}\PYG{n}{fpts}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{grpts}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{gipts}\PYG{p}{\PYGZcb{}}
+\PYG{+w}{  }\PYG{c}{(*ListLinePlot[\PYGZob{}fpts,gpts\PYGZcb{},PlotRange\PYGZbs{}[Rule]Full,}
+\PYG{c}{  ImageSize\PYGZbs{}[Rule]Large]*)}
+\PYG{+w}{  }\PYG{p}{)}
+\PYG{c}{(*generating a gaussian with 2\PYGZca{}10 points from t=\PYGZhy{}30 to t=30*)}
+\PYG{n}{gaussian}\PYG{p}{[}\PYG{n+nv}{t\PYGZus{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nv}{m\PYGZus{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nv}{s\PYGZus{}}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{Exp}\PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{p}{((}\PYG{n}{t}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{m}\PYG{p}{)}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2}\PYG{o}{/}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{n}{s}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{2}\PYG{p}{))];}
+\PYG{n}{t0}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{\PYGZhy{}30}\PYG{p}{;}
+\PYG{n}{l}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{10}\PYG{p}{;}
+\PYG{c}{(*MATLAB linspace equivalent*)}
+\PYG{n}{ts}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Array}\PYG{p}{[}\PYG{n+nv}{\PYGZsh{}}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{l}\PYG{p}{,}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{o}{\PYGZhy{}}\PYG{n}{Abs}\PYG{o}{@}\PYG{n}{t0}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{Abs}\PYG{o}{@}\PYG{n}{t0}\PYG{p}{\PYGZcb{}];}
+\PYG{c}{(*computing*)}
+\PYG{n}{data}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{dft}\PYG{p}{[}\PYG{n}{ts}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{Table}\PYG{p}{[}\PYG{n}{gaussian}\PYG{p}{[}\PYG{n}{t}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mf}{0.5}\PYG{p}{],}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{n}{t}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{ts}\PYG{p}{\PYGZcb{}]];}
+\PYG{c}{(*plotting the results*)}
+\PYG{n}{ListLinePlot}\PYG{p}{[}\PYG{n}{data}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{PlotRange}\PYG{+w}{ }\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{\PYGZob{}\PYGZob{}}\PYG{l+m+mi}{\PYGZhy{}9}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{9}\PYG{p}{\PYGZcb{},}\PYG{+w}{ }\PYG{n}{Full}\PYG{p}{\PYGZcb{}]}
+\end{Verbatim}

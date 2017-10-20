@@ -98,17 +98,17 @@ def gauss_x(x, d, x0, k0):
 dt, N_steps, t_max = 0.005, 50, 460
 hbar, m, N, dx = 1.0, 1.0, 2 ** 11, 0.1
 x = dx * (np.arange(N) - 0.5 * N)
-V0 = 3.5
+V0 = 1.5
 L = hbar / np.sqrt(2 * m * V0)
 a, x0 = 3 * L, -60 * L
-#V_x = square_barrier(x, a, V0)
+V_x = square_barrier(x, a, V0)
 #V_x = triangular_barrier(x, 3.5, V0)
-V_x = batman_barrier(x,7)
+#V_x = batman_barrier(x,7)
 #print(*V_x)
 V_x[x < -100] = 1E6
 V_x[x > 100] = 1E6
 #changed 0.2 to 0.4
-p0 = np.sqrt(2 * m * 0.8 * V0)
+p0 = np.sqrt(2 * m * 0.4 * V0)
 d = hbar / np.sqrt(2 * p0 ** 2. * 1./80)
 psi_x0 = gauss_x(x,d,x0,p0/hbar)
 k0, t = -28, 0.0
@@ -153,7 +153,7 @@ writeToFile();exit()
 fig = pl.figure()
 
 # plotting limits
-xlim = (-10, 10)
+xlim = (-100, 100)
 klim = (-5, 5)
 
 # top axes show the x-space data

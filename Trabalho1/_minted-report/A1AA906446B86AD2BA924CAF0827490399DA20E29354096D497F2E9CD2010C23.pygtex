@@ -1,0 +1,13 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{def} \PYG{n+nf}{time\PYGZus{}step}\PYG{p}{():}
+    \PYG{k}{global} \PYG{n}{t}\PYG{p}{,} \PYG{n}{psi\PYGZus{}mod\PYGZus{}x}\PYG{p}{,} \PYG{n}{psi\PYGZus{}mod\PYGZus{}k}\PYG{p}{,} \PYG{n}{t\PYGZus{}max}
+    \PYG{n}{psi\PYGZus{}mod\PYGZus{}x} \PYG{o}{*=} \PYG{n}{x\PYGZus{}evolve\PYGZus{}half}
+    \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{N\PYGZus{}steps}\PYG{p}{):}
+        \PYG{n}{psi\PYGZus{}mod\PYGZus{}k} \PYG{o}{=} \PYG{n}{fft}\PYG{p}{(}\PYG{n}{psi\PYGZus{}mod\PYGZus{}x}\PYG{p}{)}
+        \PYG{n}{psi\PYGZus{}mod\PYGZus{}k} \PYG{o}{*=} \PYG{n}{k\PYGZus{}evolve}
+        \PYG{n}{psi\PYGZus{}mod\PYGZus{}x} \PYG{o}{=} \PYG{n}{ifft}\PYG{p}{(}\PYG{n}{psi\PYGZus{}mod\PYGZus{}k}\PYG{p}{)}
+        \PYG{n}{psi\PYGZus{}mod\PYGZus{}x} \PYG{o}{*=} \PYG{n}{x\PYGZus{}evolve\PYGZus{}half}\PYG{o}{*}\PYG{n}{x\PYGZus{}evolve\PYGZus{}half}
+    \PYG{n}{psi\PYGZus{}mod\PYGZus{}k} \PYG{o}{=} \PYG{n}{fft}\PYG{p}{(}\PYG{n}{psi\PYGZus{}mod\PYGZus{}x}\PYG{p}{)}
+    \PYG{n}{t} \PYG{o}{+=} \PYG{n}{dt} \PYG{o}{*} \PYG{n}{N\PYGZus{}steps}
+    \PYG{n}{t\PYGZus{}max} \PYG{o}{=} \PYG{n}{t\PYGZus{}max} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}
+\end{Verbatim}

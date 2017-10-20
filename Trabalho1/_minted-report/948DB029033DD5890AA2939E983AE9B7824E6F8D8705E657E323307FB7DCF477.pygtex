@@ -1,0 +1,40 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{import} \PYG{n+nn}{Data.List}
+\PYG{k+kr}{import} \PYG{n+nn}{Data.Complex}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}two simple functions that extract even/odd\PYGZhy{}indexed elements from a list:}
+\PYG{n+nf}{odds} \PYG{k+kt}{[]} \PYG{o+ow}{=} \PYG{k+kt}{[]}
+\PYG{n+nf}{odds} \PYG{p}{[}\PYG{n}{x}\PYG{p}{]} \PYG{o+ow}{=} \PYG{k+kt}{[]}
+\PYG{n+nf}{odds} \PYG{p}{(}\PYG{n}{e1}\PYG{k+kt}{:}\PYG{n}{e2}\PYG{k+kt}{:}\PYG{n}{xs}\PYG{p}{)} \PYG{o+ow}{=} \PYG{n}{e2} \PYG{k+kt}{:} \PYG{n}{odds} \PYG{n}{xs}
+
+\PYG{n+nf}{evens} \PYG{k+kt}{[]} \PYG{o+ow}{=} \PYG{k+kt}{[]}
+\PYG{n+nf}{evens} \PYG{p}{[}\PYG{n}{x}\PYG{p}{]} \PYG{o+ow}{=} \PYG{k+kt}{[]}
+\PYG{n+nf}{evens} \PYG{p}{(}\PYG{n}{e1}\PYG{k+kt}{:}\PYG{n}{e2}\PYG{k+kt}{:}\PYG{n}{xs}\PYG{p}{)} \PYG{o+ow}{=} \PYG{n}{e1} \PYG{k+kt}{:} \PYG{n}{evens} \PYG{n}{xs}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}this is the factor that multiplies the odd summation in the fft algorithm,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}kept separated for readability}
+\PYG{n+nf}{f} \PYG{n}{xs} \PYG{n}{n} \PYG{o+ow}{=} \PYG{n}{exp} \PYG{o}{\PYGZdl{}} \PYG{o}{\PYGZhy{}}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{k+kt}{:+}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{pi}\PYG{p}{)}\PYG{o}{*}\PYG{n}{n} \PYG{o}{/} \PYG{n}{genericLength} \PYG{n}{xs}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}if the function is called with just two elements x and y:}
+\PYG{n+nf}{ffti} \PYG{p}{[}\PYG{n}{x}\PYG{p}{,}\PYG{n}{y}\PYG{p}{]} \PYG{n}{n} \PYG{o+ow}{=} \PYG{n}{x} \PYG{o}{+} \PYG{n}{y} \PYG{o}{*} \PYG{p}{(}\PYG{n}{exp} \PYG{o}{\PYGZdl{}} \PYG{o}{\PYGZhy{}}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{k+kt}{:+}\PYG{n}{pi}\PYG{p}{)}\PYG{o}{*}\PYG{n}{n}\PYG{p}{)}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}if the function is called with a list bigger than 2 applying the function again}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}but splitting it into two summations of even and odd indexed elements:}
+\PYG{n+nf}{ffti} \PYG{n}{xs} \PYG{n}{n} \PYG{o+ow}{=} \PYG{n}{ffti} \PYG{p}{(}\PYG{n}{evens} \PYG{n}{xs}\PYG{p}{)} \PYG{n}{n} \PYG{o}{+} \PYG{n}{f} \PYG{n}{xs} \PYG{n}{n} \PYG{o}{*} \PYG{n}{ffti} \PYG{p}{(}\PYG{n}{odds} \PYG{n}{xs}\PYG{p}{)} \PYG{n}{n}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}consume the input list}
+\PYG{n+nf}{fft} \PYG{n}{xs} \PYG{k+kt}{[]} \PYG{o+ow}{=} \PYG{k+kt}{[]}
+\PYG{n+nf}{fft} \PYG{n}{xs} \PYG{p}{(}\PYG{n}{y}\PYG{k+kt}{:}\PYG{n}{ys}\PYG{p}{)} \PYG{o+ow}{=} \PYG{p}{(}\PYG{n}{ffti} \PYG{n}{xs} \PYG{n}{y}\PYG{p}{)}\PYG{k+kt}{:}\PYG{p}{(}\PYG{n}{fft} \PYG{n}{xs} \PYG{n}{ys}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}input}
+\PYG{n+nf}{fft} \PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{4}\PYG{p}{,} \PYG{l+m+mi}{9}\PYG{p}{]} \PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+m+mi}{2}\PYG{p}{,}\PYG{l+m+mi}{3}\PYG{p}{]}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}result (where the notation :+ means complex number in Haskell)}
+\PYG{p}{[}\PYG{l+m+mf}{14.0} \PYG{k+kt}{:+} \PYG{l+m+mf}{0.0}\PYG{p}{,(}\PYG{o}{\PYGZhy{}}\PYG{l+m+mf}{4.000000000000002}\PYG{p}{)} \PYG{k+kt}{:+} \PYG{l+m+mf}{7.999999999999999}\PYG{p}{,}
+\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{l+m+mf}{6.0}\PYG{p}{)} \PYG{k+kt}{:+} \PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{l+m+mf}{2.449293598294706e\PYGZhy{}15}\PYG{p}{),(}\PYG{o}{\PYGZhy{}}\PYG{l+m+mf}{3.999999999999995}\PYG{p}{)} \PYG{k+kt}{:+} \PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{l+m+mf}{8.000000000000002}\PYG{p}{)]}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}or rounding:}
+\PYG{p}{[}\PYG{l+m+mf}{14.0} \PYG{k+kt}{:+} \PYG{l+m+mf}{0.0}\PYG{p}{,}
+\PYG{o}{\PYGZhy{}}\PYG{l+m+mf}{4.0} \PYG{k+kt}{:+} \PYG{l+m+mf}{8.0}\PYG{p}{,}
+\PYG{o}{\PYGZhy{}}\PYG{l+m+mf}{6.0} \PYG{k+kt}{:+} \PYG{l+m+mf}{0.0}\PYG{p}{,}
+\PYG{o}{\PYGZhy{}}\PYG{l+m+mf}{4.0} \PYG{k+kt}{:+} \PYG{o}{\PYGZhy{}}\PYG{l+m+mf}{8.0}\PYG{p}{)]}
+\end{Verbatim}

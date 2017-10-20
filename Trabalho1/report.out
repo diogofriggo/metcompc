@@ -1,0 +1,15 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Discrete Fourier Transform}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Implementation}{section.2}% 3
+\BOOKMARK [1][-]{section.3}{Fast Fourier Transform}{}% 4
+\BOOKMARK [2][-]{subsection.3.1}{Implementation}{section.3}% 5
+\BOOKMARK [1][-]{section.4}{Aliasing}{}% 6
+\BOOKMARK [1][-]{section.5}{Application: Textbook examples}{}% 7
+\BOOKMARK [2][-]{subsection.5.1}{Gaussian}{section.5}% 8
+\BOOKMARK [2][-]{subsection.5.2}{Code}{section.5}% 9
+\BOOKMARK [2][-]{subsection.5.3}{Harmonic Oscillator}{section.5}% 10
+\BOOKMARK [2][-]{subsection.5.4}{Code}{section.5}% 11
+\BOOKMARK [1][-]{section.6}{Application: Quantum Particle Through Potential Barrier}{}% 12
+\BOOKMARK [2][-]{subsection.6.1}{Square potential}{section.6}% 13
+\BOOKMARK [2][-]{subsection.6.2}{Triangular potential}{section.6}% 14
+\BOOKMARK [2][-]{subsection.6.3}{What if}{section.6}% 15

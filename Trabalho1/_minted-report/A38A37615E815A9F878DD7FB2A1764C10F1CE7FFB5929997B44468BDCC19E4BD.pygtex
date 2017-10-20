@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{osc}\PYG{p}{[}\PYG{n+nv}{t\PYGZus{}}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{n}{Sin}\PYG{p}{[}\PYG{l+m+mi}{10}\PYG{+w}{ }\PYG{n}{t}\PYG{p}{]}\PYG{+w}{ }\PYG{n}{Exp}\PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{n}{t}\PYG{p}{];}
+\PYG{n}{l}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{8}\PYG{p}{;}
+\PYG{n}{ts}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Array}\PYG{p}{[}\PYG{n+nv}{\PYGZsh{}}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{l}\PYG{p}{,}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{10}\PYG{p}{\PYGZcb{}];}
+\PYG{n}{data}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{dft}\PYG{p}{[}\PYG{n}{ts}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{osc}\PYG{+w}{ }\PYG{o}{/@}\PYG{+w}{ }\PYG{n}{ts}\PYG{p}{];}
+\PYG{n}{Column}\PYG{o}{@}\PYG{n}{Table}\PYG{p}{[}\PYG{n}{ListLinePlot}\PYG{p}{[}\PYG{n}{data}\PYG{p}{[[}\PYG{n}{i}\PYG{p}{]]],}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{n}{i}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{3}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{\PYGZcb{}];}
+\end{Verbatim}
