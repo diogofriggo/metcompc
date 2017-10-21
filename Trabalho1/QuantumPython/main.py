@@ -145,7 +145,7 @@ def writeToFile():
     fileV.close()
     fileC.close()
 
-writeToFile();exit()
+#writeToFile();exit()
 ############
 # PLOTTING #
 ############
