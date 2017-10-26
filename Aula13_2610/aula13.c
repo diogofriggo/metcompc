@@ -17,9 +17,11 @@ int main()
     int t, i, k;
     const int n = 20, d = 2;
     double dt = 0.1, tmax = 2000, T = 0.1;
-    double v[n][d], r[n][d], sides[d];
+    double v[n][d], r[n][d], sides[d], spacing[d];
     sides[0] = 100.;
-    sides[1] = 100.;    
+    sides[1] = 100.;
+	for(k = 0; k < d; k++)        
+		spacing[k] = sides[k]/sqrt(n);
     
     //default values
     for(i = 0; i < n; i++)
@@ -29,10 +31,13 @@ int main()
             r[i][k] = 0.;
         }
 
-	//sort random positions
+	printf("%.2f %.2f\n", spacing[0], spacing[1]);
+	for(i = 0; i < n; i++)
+		printf("%d \% %d = \n", i, );
+	//rectangular positions
 	for(i = 0; i < n; i++)														//for each particle
 		for(k = 0; k < d; k++)													//for each dimension
-			r[i][k] = randomDoubleInclusive(0, sides[k]);
+			r[i][k] = (i%100)*spacing[k];
 	
 	//sort random velocities
     for(i = 0; i < n; i++)                                                      //for each particle
@@ -43,7 +48,7 @@ int main()
 		printf("(%.2f, %.2f) (%.2f, %.2f)\n", r[i][X], r[i][Y], v[i][X], v[i][Y]);
 
 	double excess = 0.;
-    for(t = 0; t <= tmax; t++)
+    for(t = 0; t <= -1; t++)
     {
 		printf("set size square\n");
 		printf("set xrange [0:%d]\n", (int)sides[0]);
@@ -57,20 +62,19 @@ int main()
 		}
         printf("e\n");
 
-        for(i = 0; i < n; i++)                                                  //for each particle
-            for(k = 0; k < d; k++) {                                            //for each dimension
-                r[i][k] += v[i][k]*dt;
-                if(r[i][k] >= sides[k]){
-                    v[i][k] = -v[i][k];
-					r[i][k] -= r[i][k]-sides[k];
-					//r[i][k] = sides[k];
-				}
-				if(r[i][k] <= 0.){
-                    v[i][k] = -v[i][k];
-					r[i][k] = -r[i][k];
-					//r[i][k] = 0.;
-				}
-            }
+/*        for(i = 0; i < n; i++)                                                  //for each particle*/
+/*            for(k = 0; k < d; k++) {                                            //for each dimension*/
+/*                r[i][k] += v[i][k]*dt;*/
+/*				*/
+/*                if(r[i][k] >= sides[k]){*/
+/*                    v[i][k] = -v[i][k];*/
+/*					r[i][k] -= r[i][k]-sides[k];*/
+/*				}*/
+/*				if(r[i][k] <= 0.){*/
+/*                    v[i][k] = -v[i][k];*/
+/*					r[i][k] = -r[i][k];*/
+/*				}*/
+/*            }*/
     }
 	
 	return 0;
