@@ -14,18 +14,14 @@ double distance(int i, int j, int k, int d, double r[][d], double sides[d]);
 double randomDoubleInclusive(double lowerLimit, double upperLimit);
 void timeit(void (*fun)(void));
 void program();
-
-//double intermediates[100][49];
-//int intermediate_curried[100][49];
+double intermediates[100][49];
 double accelerations[100][49][2];
 int main()
 {
-//    int i, j, n = 100;
-//    for(i = 0; i < n; i++)
-//        for(j = 0; j < 49; j++){
-//            intermediates[i][j] = 0.;
-//            intermediate_curried[i][j] = 0;
-//        }
+    int i, j, n = 100;
+    for(i = 0; i < n; i++)
+        for(j = 0; j < 49; j++)
+            intermediates[i][j] = 0.;
     //n=100, t=2000, dt = 0.001, d = 2
     //with partial memoization: 17.56s
     //without: 16.3562s
@@ -47,13 +43,13 @@ void program()
     sides[0] = 100.;
     sides[1] = 100.;
     
-//    int (*ptr)[100][49];
-//    ptr = &intermediate_curried;
-    
     //random velocities
     for(i = 0; i < n; i++)
-        for(k = 0; k < d; k++)
+        for(k = 0; k < d; k++){
             v[i][k] = randomDoubleInclusive(-10, 10);
+            vh[i][k] = 0.;
+            r[i][k] = 0.;
+        }
     
     //position particles equally spaced from each other
     i = 0;
@@ -74,9 +70,9 @@ void program()
                 fprintf(file, "%.2f ", r[i][k]);
         fprintf(file, "\n");
         
-//        for(i = 0; i < n; i++)
-//            for(j = 0; j < 49; j++)
-//                (*ptr)[i][j] = 0;
+        for(i = 0; i < n; i++)
+            for(j = 0; j < 49; j++)
+                intermediates[i][j] = 0;
         
         //Velocity-verlet
         for(i = 0; i < n; i++)
@@ -97,9 +93,9 @@ void program()
                     r[i][k] = r[i][k]+sides[k];
             }
         
-//        for(i = 0; i < n; i++)
-//            for(j = 0; j < 49; j++)
-//                (*ptr)[i][j] = 0;
+        for(i = 0; i < n; i++)
+            for(j = 0; j < 49; j++)
+                intermediates[i][j] = 0;
 
         for(i = 0; i < n; i++)
             for(k = 0; k < d; k++) {
@@ -127,19 +123,16 @@ double a(int i, int j, int kk, int n, int d, double r[][d], double sides[d], dou
         return -accelerations[j][i][kk];
     
     double A = 0.;
-//    double (*ptr)[100][49];
-//    ptr = &intermediates;
-//    if(intermediate_curried[i][j])
-//        A = (*ptr)[i][j];
-//    else{
+    if(intermediates[i][j])
+        A = intermediates[i][j];
+    else{
         double sum_of_squares = 0.;
         int k;
         for(k = 0; k < d; k++)
             sum_of_squares += pow(distance(i, j, k, d, r, sides), 2.);
         A = 48*epsilon*pow(sum_of_squares,-7.)*pow(sigma,14)-0.5*pow(sum_of_squares,-4.)*pow(sigma,8);
-//        intermediates[i][j] = A;
-//        intermediate_curried[i][j] = 1;
-//    }
+        intermediates[i][j] = A;
+    }
     double acceleration = A*distance(i,j,kk,d,r,sides);
     //curry acceleration: they are antisymmetrical for i->j and j->i
     accelerations[i][j][kk] = acceleration;
