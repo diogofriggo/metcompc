@@ -101,7 +101,7 @@ x = dx * (np.arange(N) - 0.5 * N)
 V0 = 1.5
 L = hbar / np.sqrt(2 * m * V0)
 a, x0 = 3 * L, -60 * L
-V_x = square_barrier(x, a, V0)
+#V_x = square_barrier(x, a, V0)
 #V_x = triangular_barrier(x, 3.5, V0)
 #V_x = batman_barrier(x,7)
 #print(*V_x)
