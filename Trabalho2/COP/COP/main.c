@@ -6,6 +6,7 @@
 #include <string.h>
 
 void run();
+void stats();
 void setup();
 void iterate();
 void attemptFlip(int i, int j, int in, int jn);
@@ -15,43 +16,53 @@ void report(FILE *file);
 void setup();
 void timeit(void (*fun)(void));
 double randomDoubleInclusive(double lowerLimit, double upperLimit);
+void printBoard();
 
 const double rho = 0.5;
 const int l = 50;
 const int l2 = l/2;
-const int iterations = 100;
+const int iterations = 500;
 const int J = 1;
 const int kB = 1;
 const int T = 1;
 //beta >= 187 forbids any transition
 //changing boundary conditions beta >= 94 forbids any transition
-const int beta = 1000000000;//1/(kB*T);
+const int beta = 1;//1/(kB*T);
 
 int lattice[l][l];
 
 int main() {
     srand((unsigned int)time(NULL));
+//    stats();
     timeit(run);
-    int i;
-    for(i = 0; i < 100; i++){
-        printf("%.2f ", randomDoubleInclusive(0.,1.));
-    }
+//    int i;
+//    for(i = 0; i < 100; i++){
+//        printf("%.2f ", randomDoubleInclusive(0.,1.));
+//    }
     return 0;
 }
 
 void run(){
     int i;
-    
     setup();
     const char path[] = "/Users/diogofriggo/Google Drive/UFRGS 8o Semestre/METODOS/metcompc/Trabalho2/COP/COP/cop.txt";
     FILE *file = fopen(path, "w");
     for(i = 0; i < iterations; i++){
         iterate();
 //        if(i%10==0)
-            report(file);
+        report(file);
+        //printBoard();
     }
     fclose(file);
 }
+
+//void stats()
+//{
+//    double m = pow(1. - pow(1./sinh(2*beta*J), 2.), 1./8.);
+//    double pplus = (1.+m)/2.;
+//    double pminus = (1.-m)/2.;
+//    printf("m = %.2f, %.2f <= p <= %.2f\n", m, pminus, pplus);
+//}
 
 void setup()
 {
@@ -70,22 +81,32 @@ void setup()
 void iterate(){
     int i, j;
     for(i = 0; i < l; i++)
-        for(j = 0; j < l; j++){
-            if(j+1 < l)
+        for(j = 1; j < (l-1); j++){ //avoid first and last row due to boundary conditions
+            //for vertical movement we prevent a flip with a boundary neighbour since
+            //that neighbour's spin is fixed to either +1 (bottom) or -1 (top)
+            if((j+1) < l)
                 attemptFlip(i, j, i, j+1); //top
-            if(i+1 < l)
-                attemptFlip(i, j, i+1, j); //right
-            if(j-1 > 0)
+            if((j-1) > 0)
                 attemptFlip(i, j, i, j-1); //bottom
-            if(i-1 > 0)
-                attemptFlip(i, j, i-1, j); //left
+            
+            //for horizontal movement apply periodic boundary conditions
+            if((i+1) < l) //if neighbour is not on the right boundary
+                attemptFlip(i, j, i+1, j);
+            else //else neighbour is at the right boundary, apply boundary condition
+                attemptFlip(i, j, 0, j);
+            
+            if((i-1) >= 0) //if neighbour is not on the left boundary
+                attemptFlip(i, j, i-1, j);
+            else //else neighbour is at the right boundary, apply boundary condition
+                attemptFlip(i, j, l-1, j);
         }
 }
 
 //in = neighbour's i, jn = neighbour's j
 void attemptFlip(int i, int j, int in, int jn){
     int deltaE = computePairEnergy(i, j, in, jn);
-    if(deltaE < 0 || exp(-beta*deltaE) > randomDoubleInclusive(0.,1.)){
+//    printf("%d\n", deltaE);
+    if(deltaE < 0 || exp(-beta*deltaE) < randomDoubleInclusive(0.,1.)){
         int temp = lattice[i][j];
         lattice[i][j] = lattice[in][jn];
         lattice[in][jn] = temp;
@@ -99,14 +120,35 @@ int computePairEnergy(int i, int j, int in, int jn){
 //in = neighbour's i, jn = neighbour's j
 int computeEnergy(int i, int j, int in, int jn){
     int energy = 0;
-    if(!(in == i && jn == j+1)) //top
-        energy += j+1 < l ? lattice[i][j+1] : -1; //keeps interface from wandering off
-    if(!(in == i+1 && jn == j)) //right
-        energy += i+1 < l ? lattice[i+1][j] : lattice[0][j]; //horizontal periodic boundary condition
-    if(!(in == i && jn == j-1)) //bottom
-        energy +=  j-1 > 0 ? lattice[i][j-1] : 1; //keeps interface from wandering off
-    if(!(in == i-1 && jn == j)) //left
-        energy += i-1 > 0 ? lattice[i-1][j] : lattice[l-1][j]; //horizontal periodic boundary condition
+    //compute the energy of the neighbours of (i,j) excluding (in,jn)
+    if(!(in == i && jn == (j+1))) //top
+    {
+        if((j+1) < l)
+            energy += lattice[i][j+1];
+        else
+            energy += -1; //keeps interface from wandering off
+    }
+    if(!(in == (i+1) && jn == j)) //right
+    {
+        if((i+1) < l)
+            energy += lattice[i+1][j];
+        else
+            energy += lattice[0][j]; //horizontal periodic boundary condition
+    }
+    if(!(in == i && jn == (j-1))) //bottom
+    {
+        if((j-1) > 0)
+            energy += lattice[i][j-1];
+        else
+            energy += 1; //keeps interface from wandering off
+    }
+    if(!(in == (i-1) && jn == j)) //left
+    {
+        if((i-1) > 0)
+            energy += lattice[i-1][j];
+        else
+            energy += lattice[l-1][j]; //horizontal periodic boundary condition
+    }
     return energy;
 }
 
@@ -127,4 +169,18 @@ void timeit(void (*fun)(void)){
 
 double randomDoubleInclusive(double lowerLimit, double upperLimit){
     return lowerLimit + (double)rand() / (double)RAND_MAX * (upperLimit - lowerLimit);
+}
+
+void printBoard(){
+    printf("Printing board...\n");
+    int i, j;
+    for(j = l-1; j >= 0; j--){
+        printf("%2d ", j);
+        for(i = 0; i < l; i++)
+            printf("%s", lattice[i][j] == 1 ? "u" : "-");
+        printf("\n");
+    }
+    printf("\n");
+    //I avoided this clever trick because it hinders readability:
+    //printf("%3d%s", board[i][j], j%ncols == (ncols-1) ? "\n" : "");
 }
