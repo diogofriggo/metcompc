@@ -25,6 +25,7 @@
 /* Begin PBXFileReference section */
 		29668C852016AF9200BC95F9 /* COP */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = COP; sourceTree = BUILT_PRODUCTS_DIR; };
 		29668C8F2016B0D000BC95F9 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		29668CA52016BEF200BC95F9 /* cop.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cop.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +58,7 @@
 		29668C872016AF9200BC95F9 /* COP */ = {
 			isa = PBXGroup;
 			children = (
+				29668CA52016BEF200BC95F9 /* cop.txt */,
 				29668C8F2016B0D000BC95F9 /* main.c */,
 			);
 			path = COP;

@@ -8,7 +8,7 @@
 void run();
 void setup();
 void iterate();
-void report();
+void report(FILE *file);
 void setup();
 void timeit(void (*fun)(void));
 int randomIntegerInclusive(int lowerLimit, int upperLimit);
@@ -16,7 +16,7 @@ int randomIntegerInclusive(int lowerLimit, int upperLimit);
 const int l = 50;
 const int l2 = l/2;
 const int iterations = 1000;
-int lattice[50][50];
+int lattice[l][l];
 
 int main() {
     srand((unsigned int)time(NULL));
@@ -28,11 +28,14 @@ void run(){
     int i;
     
     setup();
+    const char path[] = "/Users/diogofriggo/Google Drive/UFRGS 8o Semestre/METODOS/metcompc/Trabalho2/COP/COP/cop.txt";
+    FILE *file = fopen(path, "w");
     for(i = 0; i < iterations; i++){
         iterate();
         if(i%10==0)
-            report();
+            report(file);
     }
+    fclose(file);
 }
 
 void setup()
@@ -42,24 +45,27 @@ void setup()
     for(i = 0; i < l; i++)
         for(j = 0; j < l; j++)
             lattice[i][j] = 0;
+    
     for(i = 0; i < l; i++)
         for(j = 0; j < l2; j++)
             lattice[i][j] = 1;
 }
 
 void iterate(){
+    for(i = 0; i < l; i++)
+        for(j = 0; j < l; j++)
+            
+}
+
+void calculateEnergy(int x, int y){
     
 }
 
-void report(){
+void report(FILE *file){
     int i, j;
-    const char path[] = "/Users/diogofriggo/Google Drive/UFRGS 8o Semestre/METODOS/metcompc/Trabalho2/COP/COP/cop.txt";
-    FILE *file = fopen(path, "w");
-    
     for(i = 0; i < l; i++)
         for(j = 0; j < l; j++)
-        fprintf(file, "%d %d %d\n", i, j, lattice[i][j]);
-    fclose(file);
+            fprintf(file, "%d %d %d\n", i, j, lattice[i][j]);
 }
 
 void timeit(void (*fun)(void)){
