@@ -21,20 +21,36 @@ void printBoard();
 const double rho = 0.5;
 const int l = 50;
 const int l2 = l/2;
-const int iterations = 500;
+const int iterations = 100;
 const int J = 1;
 const int kB = 1;
 const int T = 1;
 //beta >= 187 forbids any transition
 //changing boundary conditions beta >= 94 forbids any transition
-const int beta = 1;//1/(kB*T);
+int beta = 530000000;//1/(kB*T);
 
 int lattice[l][l];
 
 int main() {
     srand((unsigned int)time(NULL));
 //    stats();
-    timeit(run);
+    int i;
+    for(i = 1; i < 550000000; i += 1000000)
+    {
+        beta = i;
+        run();
+        //timeit(run);
+        int beta_stable = 1;
+        int j;
+        for(j = 0; j < l; j++)
+            if(lattice[1][j] == -1){
+                beta_stable = 0;
+                break;
+            }
+        if(beta_stable)
+            printf("%.2f is stable\n", beta);
+    }
+    
 //    int i;
 //    for(i = 0; i < 100; i++){
 //        printf("%.2f ", randomDoubleInclusive(0.,1.));
@@ -49,9 +65,9 @@ void run(){
     FILE *file = fopen(path, "w");
     for(i = 0; i < iterations; i++){
         iterate();
-//        if(i%10==0)
         report(file);
-        //printBoard();
+//        if(i%100==0)
+            //printBoard();
     }
     fclose(file);
 }
@@ -84,7 +100,7 @@ void iterate(){
         for(j = 1; j < (l-1); j++){ //avoid first and last row due to boundary conditions
             //for vertical movement we prevent a flip with a boundary neighbour since
             //that neighbour's spin is fixed to either +1 (bottom) or -1 (top)
-            if((j+1) < l)
+            if((j+1) < (l-1))
                 attemptFlip(i, j, i, j+1); //top
             if((j-1) > 0)
                 attemptFlip(i, j, i, j-1); //bottom
@@ -121,12 +137,13 @@ int computePairEnergy(int i, int j, int in, int jn){
 int computeEnergy(int i, int j, int in, int jn){
     int energy = 0;
     //compute the energy of the neighbours of (i,j) excluding (in,jn)
+    //I think in != i && jn != (j+1) would also work
     if(!(in == i && jn == (j+1))) //top
     {
-        if((j+1) < l)
+        if((j+1) < (l-1)) //if not neighbour on the top layer
             energy += lattice[i][j+1];
         else
-            energy += -1; //keeps interface from wandering off
+            energy += -1; //boundary condition which keeps interface from wandering off
     }
     if(!(in == (i+1) && jn == j)) //right
     {
@@ -137,10 +154,10 @@ int computeEnergy(int i, int j, int in, int jn){
     }
     if(!(in == i && jn == (j-1))) //bottom
     {
-        if((j-1) > 0)
+        if((j-1) > 0) //if not neighbour on the bottom layer
             energy += lattice[i][j-1];
         else
-            energy += 1; //keeps interface from wandering off
+            energy += 1; //boundary condition which keeps interface from wandering off
     }
     if(!(in == (i-1) && jn == j)) //left
     {
