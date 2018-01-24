@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "COP/main.c"
-            timestampString = "538434183.095021"
+            timestampString = "538445386.055071"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "88"
-            endingLineNumber = "88"
+            startingLineNumber = "110"
+            endingLineNumber = "110"
             landmarkName = "iterate()"
             landmarkType = "7">
          </BreakpointContent>
@@ -24,38 +24,13 @@
          <BreakpointContent
             shouldBeEnabled = "No"
             ignoreCount = "0"
-            condition = "j==49"
             continueAfterRunningActions = "No"
             filePath = "COP/main.c"
-            timestampString = "538434183.095021"
+            timestampString = "538445386.055071"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
-            landmarkName = "iterate()"
-            landmarkType = "7">
-            <Actions>
-               <BreakpointActionProxy
-                  ActionExtensionID = "Xcode.BreakpointAction.DebuggerCommand">
-                  <ActionContent
-                     consoleCommand = "">
-                  </ActionContent>
-               </BreakpointActionProxy>
-            </Actions>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "COP/main.c"
-            timestampString = "538434183.095021"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "91"
-            endingLineNumber = "91"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
             landmarkName = "iterate()"
             landmarkType = "7">
          </BreakpointContent>
@@ -68,11 +43,11 @@
             condition = "deltaE &gt; 1000 || deltaE &lt; -1000"
             continueAfterRunningActions = "No"
             filePath = "COP/main.c"
-            timestampString = "538434864.69274"
+            timestampString = "538445386.055071"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "123"
-            endingLineNumber = "123"
+            startingLineNumber = "142"
+            endingLineNumber = "142"
             landmarkName = "attemptFlip()"
             landmarkType = "7">
             <Actions>
@@ -92,11 +67,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "COP/main.c"
-            timestampString = "538434864.69274"
+            timestampString = "538445386.055071"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "134"
-            endingLineNumber = "134"
+            startingLineNumber = "153"
+            endingLineNumber = "153"
             landmarkName = "attemptFlip()"
             landmarkType = "7">
          </BreakpointContent>
@@ -108,11 +83,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "COP/main.c"
-            timestampString = "538434183.095021"
+            timestampString = "538441397.445658"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
             landmarkName = "main()"
             landmarkType = "7">
          </BreakpointContent>

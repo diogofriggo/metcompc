@@ -8,6 +8,23 @@
 #define ATTEMPT_FLIP 0
 #define PRINT_LATTICE 0
 
+typedef unsigned long uint32;
+
+#define N              (624)                 // length of state vector
+#define M              (397)                 // a period parameter
+#define K              (0x9908B0DFU)         // a magic constant
+#define hiBit(u)       ((u) & 0x80000000U)   // mask all but highest   bit of u
+#define loBit(u)       ((u) & 0x00000001U)   // mask all but lowest    bit of u
+#define loBits(u)      ((u) & 0x7FFFFFFFU)   // mask     the highest   bit of u
+#define mixBits(u, v)  (hiBit(u)|loBits(v))  // move hi bit of u to hi bit of v
+
+static uint32   state[N+1];     // state vector + 1 extra to not violate ANSI C
+static uint32   *next;          // next random value is computed from here
+static int      left = -1;      // can *next++ this many times before reloading
+void seedMT(uint32 seed);
+uint32 reloadMT(void);
+uint32 randomMT(void);
+
 void run();
 void stats();
 void setup();
@@ -24,25 +41,28 @@ void printLattice();
 const double rho = 0.5;
 const int l = 50;
 const int l2 = l/2;
-const int iterations = 40;
+const int iterations = 500;
 const int J = 1;
 const int kB = 1;
 const int T = 1;
-double beta = 0.7 ;//1/(kB*T);
+
+double beta = 0.1 ;//1/(kB*T);
 const int offset = 12;
 double exps[25];
 int lattice[l][l];
 int getPBCIndex(int i);
     
 int main() {
-    srand((unsigned int)time(NULL));
-    timeit(run);
+    seedMT(4357U);
+//    timeit(run);
     int i;
-    for(i = 1; i < 10; i++)
+    double betas[4] = {0.01, 0.35, 0.5};
+    for(i = 0; i < 3; i++)
     {
-        beta = i/10.;
+        beta = betas[i];
         run();
     }
+    return 0;
 }
 
 void run(){
@@ -50,15 +70,17 @@ void run(){
     setup();
     char path[300] = "/Users/diogofriggo/Google Drive/UFRGS 8o Semestre/METODOS/metcompc/Trabalho2/COP/COP/";
     char name[50];
-    sprintf(name, "cop%.1f.txt", beta);
+    sprintf(name, "cop%.2f.txt", beta);
     strcat(path, name);
     FILE *file = fopen(path, "w");
     report(file);
     for(i = 0; i < iterations; i++){
         iterate();
-        report(file);
+        if(i%10 == 0)
+            report(file);
         #if PRINT_LATTICE
-        printLattice();
+        if(i == iterations-1)
+            printLattice();
         #endif
     }
     fclose(file);
@@ -70,7 +92,7 @@ void setup()
     //precompute possible exponentials to save CPU time
     for(i = 0; i < 25; i++)
         exps[i] = 0.;
-    int deltaEs[7] = {12, 8, 4, 0, -4, -8, -12};
+    int deltaEs[7] = {-12, -8, -4, 0, 4, 8, 12};
     for(i = 0; i < 7; i++)
         exps[offset + deltaEs[i]] = exp(-beta*deltaEs[i]);
     
@@ -90,21 +112,18 @@ void iterate(){
         for(j = 1; j < (l-1); j++){ //avoid first and last row due to boundary conditions
             //for vertical movement we prevent a flip with a boundary neighbour since
             //that neighbour's spin is fixed to either +1 (bottom) or -1 (top)
-            if((j+1) < (l-1))
-                attemptFlip(i, j, i, j+1); //top
-            if((j-1) > 0)
-                attemptFlip(i, j, i, j-1); //bottom
             
+            double r = randomDoubleInclusive(0., 1.);
+            //no need to PCB correct j index because of the for loop's range
+            if(r < 0.25 && (j+1) < (l-1)) //top
+                attemptFlip(i, j, i, j+1);
+            else if(r < 0.5 && (j-1) > 0) //bottom
+                attemptFlip(i, j, i, j-1);
             //for horizontal movement apply periodic boundary conditions
-            if((i+1) < l) //if neighbour is not on the right boundary
-                attemptFlip(i, j, i+1, j);
-            else //else neighbour is at the right boundary, apply boundary condition
-                attemptFlip(i, j, 0, j);
-            
-            if((i-1) >= 0) //if neighbour is not on the left boundary
-                attemptFlip(i, j, i-1, j);
-            else //else neighbour is at the right boundary, apply boundary condition
-                attemptFlip(i, j, l-1, j);
+            else if(r < 0.75) //left
+                attemptFlip(i, j, getPBCIndex(i-1), j);
+            else //right
+                attemptFlip(i, j, getPBCIndex(i+1), j);
         }
 }
 
@@ -120,7 +139,7 @@ void attemptFlip(int i, int j, int in, int jn){
 //    printf("%d\n", deltaE);
 //    printf("exps[12 + %d] = %.4f\n", deltaE, exps[offset + deltaE]);
     double r = randomDoubleInclusive(0.,1.);
-    if(deltaE < 0 || exps[offset + deltaE] > r){
+    if(deltaE < 0 || exps[offset + deltaE] >= r){
         int temp = lattice[i][j];
         lattice[i][j] = lattice[in][jn];
         lattice[in][jn] = temp;
@@ -167,7 +186,7 @@ int computeEnergy(int i, int j, int in, int jn){
 
 int getPBCIndex(int i){
     if(i < 0)
-        return 49;
+        return l-1;
     if(i > (l-1))
         return 0;
     return i;
@@ -188,10 +207,6 @@ void timeit(void (*fun)(void)){
     printf("%.6f\n", timeElapsed);
 }
 
-double randomDoubleInclusive(double lowerLimit, double upperLimit){
-    return lowerLimit + (double)rand() / (double)RAND_MAX * (upperLimit - lowerLimit);
-}
-
 void printLattice(){
     printf("Printing lattice...\n");
     int i, j;
@@ -201,4 +216,59 @@ void printLattice(){
             printf("%s", lattice[i][j] == 1 ? "u" : "-");
         printf("\n");
     }
+}
+
+
+void seedMT(uint32 seed)
+{
+    register uint32 x = (seed | 1U) & 0xFFFFFFFFU, *s = state;
+    register int    j;
+    
+    for(left=0, *s++=x, j=N; --j;
+        *s++ = (x*=69069U) & 0xFFFFFFFFU);
+}
+
+
+uint32 reloadMT(void)
+{
+    register uint32 *p0=state, *p2=state+2, *pM=state+M, s0, s1;
+    register int    j;
+    
+    if(left < -1)
+        seedMT(4357U);
+    
+    left=N-1, next=state+1;
+    
+    for(s0=state[0], s1=state[1], j=N-M+1; --j; s0=s1, s1=*p2++)
+        *p0++ = *pM++ ^ (mixBits(s0, s1) >> 1) ^ (loBit(s1) ? K : 0U);
+    
+    for(pM=state, j=M; --j; s0=s1, s1=*p2++)
+        *p0++ = *pM++ ^ (mixBits(s0, s1) >> 1) ^ (loBit(s1) ? K : 0U);
+    
+    s1=state[0], *p0 = *pM ^ (mixBits(s0, s1) >> 1) ^ (loBit(s1) ? K : 0U);
+    s1 ^= (s1 >> 11);
+    s1 ^= (s1 <<  7) & 0x9D2C5680U;
+    s1 ^= (s1 << 15) & 0xEFC60000U;
+    return(s1 ^ (s1 >> 18));
+}
+
+
+uint32 randomMT(void)
+{
+    uint32 y;
+    
+    if(--left < 0)
+        return(reloadMT());
+    
+    y  = *next++;
+    y ^= (y >> 11);
+    y ^= (y <<  7) & 0x9D2C5680U;
+    y ^= (y << 15) & 0xEFC60000U;
+    return(y ^ (y >> 18));
+}
+
+double randomDoubleInclusive(double lowerLimit, double upperLimit){
+    unsigned long randomNumber = (unsigned long) randomMT();
+    unsigned long maxRandomNumber = pow(2,32) - 1;
+    return lowerLimit + (double)randomNumber / (double)maxRandomNumber * (upperLimit - lowerLimit);
 }
