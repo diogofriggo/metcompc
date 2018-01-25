@@ -282,3 +282,4 @@ double randomDoubleInclusive(double lowerLimit, double upperLimit){
     unsigned long maxRandomNumber = pow(2,32) - 1;
     return lowerLimit + (double)randomNumber / (double)maxRandomNumber * (upperLimit - lowerLimit);
 }
+    

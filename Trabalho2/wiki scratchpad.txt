@@ -1,0 +1,303 @@
+As forças de atração e repulsão num gás real não possuem alcance de mesma ordem. A repulsão é de curto alcance enquanto a atração é de longo-alcance. Embora o presente modelo trate as partículas como se o alcance de repulsão e atração fosse da mesma ordem, ainda é possível extrair propriedades físicas que tem paralelo com o gás real tais como transições de fase e formato de interfaces. 
+
+Essas informações estão contidas nesse modelo simplificado por serem independentes dos detalhes do mecanismo de interação entre partículas, em particular, 
+
+O ponto crítico marca a situação onde o sistema alterna-se entre homogêneo e 
+
+
+==Interpretação física==
+
+À partícula presente associamos o valor +1 e à ausente o valor 0.
+
+mersenne twister
+
+Grupo - O modelo de Ising sob conservação do parâmetro de ordem (CPO)
+
+[[Arquivo:erro_dt.jpeg|frame|400px|center|Comparação do erro global entre os três métodos estudados com escala logarítimica em ambos os eixos]]
+
+O fato de essa expressão envolver apenas o estado atual ]mu e não o estado final ]nu é muito conveniente para a simulação pois não é necessário efetuar a troca de estados, basta calcular a diferença de energia
+
+
+https://fiscomp.if.ufrgs.br/index.php/Grupo_-_Conservação_do_Parâmetro_de_Ordem
+
+[[Arquivo:cop500iterinstepsof10.gif|frame|center|description]]
+
+[[Arquivo:copSquare500iterinstepsof10.gif|frame|center|description]]
+[[Arquivo:copSquare100-iloveimg-compressed.gif|frame|center|description]]
+
+[[Arquivo:cop3D500instepsof10.gif|frame|center|description]]
+[[Arquivo:cop3D250instepsof5.gif|frame|center|description]]
+[[Arquivo:cop3D250instepsof5round.gif|frame|center|description]]
+
+**********
+* BACKUP *
+**********
+
+==Introdução==
+
+O modelo de Ising possui características universais que permitem aplicá-lo a situações diversas sendo tão versátil a ponto de descrever desde ferromagnetos até interações sociais. Dentro dessa gama de possibilidades existe o modelo de Conservação do Parâmetro de Ordem (CPO) em que, como o nome indica, mantém-se o parâmetro de ordem constante. No caso de um ferromagneto o parâmetro de ordem é a magnetização, portanto, um modelo de Ising sujeito CPO a grandeza análoga à magnetização se manteria constante a cada passo da simulação. 
+
+Apesar da estrutura matemática muito similar ao modelo de Ising, o modelo de CPO com sua simples condição de conservação do parâmetro de ordem aliado a condições de contorno permite que se modele sistemas marcadamente diferentes do tradicional sistema de ferromagneto tais como o gás de rede onde é possível estudar o comportamento de interfaces vapor-sólido ou vapor-líquido em condições de equilíbrio como por exemplo o equilíbrio entre água líquida e seu vapor ou entre gelo e vapor d'água.
+
+O gás de rede é um modelo simplificado de um gás real onde se associa a cada ponto da rede uma partícula (átomo) ou sua ausência (vacância). Ao contrário do gás real a coordenada do movimento não é contínua, pois as partículas se movem de maneira discreta somente pelos vértices da rede. 
+Pode-se refinar o modelo de diversas formas:
+* Atribuindo inércia às partículas
+* Alterando a forma da rede (quadrada, hexagonal, fcc, bcc, cúbica) 
+* Incluindo partículas de tipos diferentes com interações comum a seu respectivo tipo
+* Presença e/ou tipos de colisões
+
+No entanto, uma versão simplificada (e simples de simular) desse modelo é suficiente para reproduzir qualitativamente o comportamento de interfaces.
+
+==Teoria<ref name=newman>Newman, M. E. J.; Barkema, G. T. (1999). "Monte Carlo Methods in Statistical Physics" New York: Oxford University Press. ISBN 019-851796-3.</ref>==
+
+No modelo simplificado do gás de rede as partículas (sem inércia), movem-se de forma aleatória sob excitação térmica e satisfazem as seguintes condições:
+
+#O número total de partículas é fixo: nenhuma partícula deixa ou entra no sistema, portanto, caso desapareça a partícula deve reaparecer em outro ponto da rede no mesmo passo de simulação.
+#Um ponto da rede pode ser ocupado por uma única partícula ou permanecer vazio (não ocupado). Essa é uma maneira grosseira de assimilar o caráter físico de repulsão do gás real onde partículas não podem interpenetrar-se devido a exclusão de Pauli.
+#Se duas partículas são primeiras vizinhas uma da outra elas sentem uma atração <math>\epsilon</math> que é a mesma para qualquer par de partículas. Essa condição modela o efeito de atração entre partículas de um gás real.
+
+As forças de atração e repulsão num gás real não possuem alcance de mesma ordem. A repulsão é de curto alcance enquanto a atração é de longo-alcance. Embora o presente modelo trate as partículas como se o alcance de repulsão e atração fossem da mesma ordem, ainda é possível extrair propriedades físicas que tem paralelo com o gás real tais como transições de fase e formato de interfaces. 
+
+A cada ponto da rede associamos o valor <math>+1</math> se houver uma partícula nesse ponto ou <math>0</math> caso contrário. Representamos essa variável por <math>\sigma_i</math>, ou seja, no iésimo ponto da rede a variável <math>\sigma_i</math> pode assumir apenas os valores <math>+1</math> ou <math>0</math>, ou resumidamente:
+
+<math>
+\begin{cases}
+0, \text{ponto da rede vazio} \\
+1, \text{ponto da rede ocupado} \\
+\end{cases}
+</math>
+
+A conservação do número de partículas exige que se tenha: 
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>\sum_i\sigma_i = \rho N</math> </div>
+
+Onde <math>\rho</math> é a densidade de partículas e <math>N</math> é o número total de partículas, sendo, portanto, <math>\rho N</math> o número de pontos ocupados da rede.
+
+O hamiltoniano do sistema é modelado a partir da condição 2 exposta acima em que é especificado que um par de primeiros vizinhos na rede contribui para a diminuição da energia do sistema por uma quantidade <math>\epsilon</math>:
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>H = -\epsilon\sum_{<ij>}\sigma_i\sigma_j</math> </div>
+
+Onde <math>\sum_{<ij>}</math> denota soma sobre todos os pares de primeiros vizinhos da rede.
+
+===Equivalência ao modelo de Ising===
+
+Para mostrar a equivalência com o modelo de Ising definimos a seguinte variável:
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>s_i = 2\sigma_i-1</math> </div>
+
+Essa nova variável é nada mais do que o spin no modelo de Ising para um ferromagneto assumindo os valores:
+* <math>+1</math> quando <math>\sigma_i = +1</math>, ou seja, posição ocupada por partícula; ou
+* <math>-1</math> quando <math>\sigma_i = 0</math>, ou seja, posição não ocupada
+
+Em termos da variável de spin <math>\sigma_i</math> é dada por:
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>\sigma_i = \frac{1}{2}(s_i+1)</math> </div>
+
+Substituindo no Hamiltoniano tem-se:
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>H = -\frac{1}{4}\epsilon\sum_{<ij>}(s_i+1)(s_j+1)</math> </div>
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>H = -\frac{1}{4}\epsilon\sum_{<ij>}s_is_j-\frac{1}{4}\epsilon\sum_{<ij>}s_i-\frac{1}{4}\epsilon\sum_{<ij>}s_j-\frac{1}{4}\epsilon\sum_{<ij>}1</math> </div>
+
+Seja <math>z</math> o número de coordenação da rede, ou seja, o número de primeiros vizinhos (<math>z=4</math> para rede quadrada e <math>z=6</math> para rede cúbica simples). Para uma dada rede existem <math>2 z N</math> possíveis pares distintos
+
+Pode-se simplificar esssa expressão com base nas seguintes observações:
+
+* Os somatórios em <math>s_i</math> e <math>s_j</math> são idênticos exceto pelo índice.
+* A soma <math>\sum_{<ij>}s_i</math>sobre pares de vizinhos é equivalente a somar <math>z</math> vezes sobre o número de pontos da rede: 
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>\sum_{<ij>}s_i = 2z\sum_{i}s_i</math></div>
+
+* <math>\sum_i s_i</math> pode ser escrito em termos das constantes <math>\rho</math> e <math>N</math> assim como ocorre com <math>\sigma_i</math>
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>\sum_i\sigma_i = \rho N</math></div>
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>\frac{1}{2}\sum_i(s_i+1) = \rho N</math></div>
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>\frac{1}{2}\sum_i s_i = \rho N - \frac{1}{2}\sum_i 1</math></div>
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>\frac{1}{2}\sum_i s_i = \rho N - \frac{1}{2}N</math></div>
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>\sum_i s_i = N(2\rho - 1)</math>
+</div>
+
+Dessa forma o Hamiltoniano se reduz a:
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>H = -\frac{1}{4}\epsilon\sum_{<ij>}s_is_j-\frac{1}{2}z\epsilon\sum_{i}s_i-\frac{1}{4}\epsilon(2zN)</math> </div>
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>H = -\frac{1}{4}\epsilon\sum_{<ij>}s_is_j-\frac{1}{2}z\epsilon(N(2\rho-1))-\frac{1}{4}\epsilon(2zN)</math> </div>
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>H = -\frac{1}{4}\epsilon\sum_{<ij>}s_is_j-z\epsilon N\rho +\frac{1}{2}\epsilon z N-\frac{1}{2}\epsilon z N </math> </div>
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>H = -\frac{1}{4}\epsilon\sum_{<ij>}s_is_j-z\epsilon N\rho</math></div>
+
+Seja J = <math>\frac{1}{4}\epsilon</math> e observando que <math>-z\epsilon N\rho</math> é uma constante pois todos seus termos são constantes, chegamos na equivalência com o Hamiltoniano do modelo de Ising na ausência de campo magnético:
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>H = -J\sum_{<ij>}s_is_j + ctc = H^{Ising}_{B=0} + ctc</math></div>
+
+O valor esperado <math><Q></math> de qualquer quantidade física <math>Q</math> não é alterado pela adição de uma constante ao hamiltoniano:
+
+<math><Q> = \sum_\mu Q_\mu p_\mu = \frac{\sum_\mu{Q_\mu}e^{-\beta(E_\mu + ctc)}}{\sum_\mu e^{-\beta(E_\mu + ctc)}}= \frac{e^{-\beta ctc}\sum_\mu{Q_\mu}e^{-\beta E_\mu}}{e^{-\beta ctc}\sum_\mu e^{-\beta E_\mu}} = \frac{1}{Z}\sum_\mu{Q_\mu}e^{-\beta E_\mu} = <Q></math>
+
+===Conservação do parâmetro de ordem===
+
+A magnetização do sistema é nada mais do que a soma de spins que já calculamos acima:
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>M = \sum_i s_i = N(2\rho - 1)</math></div>
+
+No entanto, <math>\rho</math> e <math>N</math> devem permanecer constantes durante toda a simução, isso implica que a magnetização também é sempre constante, ou seja, a magneticação é o '''parâmetro de ordem conservado''' nesse sistema fato que dá nome ao método.
+
+É vantajoso tratar o modelo de gás de rede sob a perspectiva de um modelo de Ising pois todo o arcabouço de técnicas amplamente conhecidas e extensivamente estudadas para o modelo de Ising podem ser aplicadas.
+
+Apesar das similaridades, o gás de rede, como definido, possui muito menos estados válidos pois não é permitido alterar a magnetização do sistema enquanto no modelo de Ising qualquer spin individual pode ser invertido sem restrições pois a magnetização não precisa se manter constante.
+
+==Transição de fase==
+
+Aproveitando a equivalência estabelecida entre gás de rede e o modelo de Ising sabe-se que o sistema possui uma transição de fase que ocorre a uma temperatura crítica <math>T_c</math>. Rearranjando a densidade de pontos (equivalente agora a spins up) tem-se:
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>2\rho - 1 = \frac{M}{N}</math></div>
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>\rho = \frac{1}{2}(1+m)</math></div>
+
+No modelo de Ising sabe-se também que abaixo da temperatura crítica existem dois valores de equilíbrio para a magnetização que são <math>+|m|</math> e <math>-|m|</math>, portanto, para favorecer a coexistência de fases tem-se que:
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>\frac{1}{2}(1-|m|) = \rho_- \le \rho \le \rho_+ = \frac{1}{2}(1+|m|)</math></div>
+
+Para valores de <math>\rho</math> fora do intervalo <math>\rho_- \le \rho \le \rho_+</math> ainda é possível que uma região do sistema favoreça uma das duas densidades preferenciais. Suponha que se tenha <math>\rho < \rho_-</math>. Nesse caso o sistema possui menos partículas do que precisa pra atingir o a densidade <math>\rho_+</math>. Ainda que localmente seja possível o sistema atingir a densidade <math>\rho_+</math> isso leva a uma falta ainda maior de partículas em outras regiões do sistema sendo, portanto, energeticamente custoso. A opção energeticamente mais favorável adotada pelo sistema é distribuir as poucas partículas homegeneamente pela rede. Esse comportamento é observado na simulação.
+
+Dessa forma, no caso de <math>J>0</math> o sistema possui duas fases:
+* Uma em que <math>\rho\in[\rho_-,\rho_+]</math> se dividindo em dois domínios cada qual favorecendo uma das duas densidades <math>\pm\rho</math>
+* E outra em que <math>\rho\not\in[\rho_-,\rho_+]</math> tendo densidade homogênea 
+
+Com <math>\rho</math> sujeito ao intervalo <math>\frac{1}{2}(1-|m|) \le \rho \le \frac{1}{2}(1+|m|)</math> conclui-se que <math>/rho</math> pode assumir um intervalo menor de valores a medida que <math>|m|</math> diminui. A magnetização diminui sob o aumento da temperatura. Acima da temperatura crítica a <math>|m|=0</math> e portanto o intervalo <math>\frac{1}{2}(1-|m|) \le \rho \le \frac{1}{2}(1+|m|)</math> reduz-se a zero evidenciando que não existe mais um valor de <math>\rho</math> que evite a homogeinização da rede.
+
+A discussão acima pode ser apresentada resumidamente pelo diagrama de fases:
+
+[[Arquivo:Cop_phase_diagram.png|frame|50px|center|Diagrama de fases do modelo CPO. Fase homogênea para temperaturas além da temperatura crítica e fase coexistente abaixo com densidades preferenciais <math>\rho_+</math> e <math>\rho_-</math>]]
+
+Esse comportamento é observado quando se diminui a temperatura de vapor d'agua que passa a formar gotas líquidas que coexistem com o vapor para um intervalo de temperaturas. A fase condensada do gás de rede, no entanto, é mais adequadamente interpretada como um sólido devido a posição fixa das partículas (análogas a moléculas ou átomos) na rede, dessa forma, falamos de interface vapor/sólido ao invés de vapor/líquido.
+
+==Implementação<ref name=krauth>Krauth, Werner (2006). "Statiscal Mechanics: Algorithms and Computations" New York: Oxford University Press. ISBN 978-0-19-851535-7.</ref>==
+
+Sistemas físicos em equilíbrio com muitos graus de liberdade e no limite termodinâmico comportam-se de tal forma que ao flutuarem de um estado <math>\mu</math> para um estado <math>\nu</math> tem-se que <math>\nu</math> difere pouco de <math>\mu</math>. Outra maneira de dizer isso é que as flutuações dessa tipo de sistema físico são muito pequenas em relação ao número de configurações possíveis e que portanto o sistema passa a maior parte do tempo alternando entre um pequeno conjunto de configurações. A consequência disso é que pode-se escolher uma estratégia de visitar com maior probabilidade apenas a fração de estados do sistema, as quais mais contribuem para atingir o equilíbrio ao invés de se visitar todos os estados indistintamente. No modelo de ferromagneto, por exemplo, com uma rede <math>10\times 10\times 10</math>, há <math>2^{1000} \simeq 10^{300}</math> configurações possíveis sendo que mesmo com um supercomputador seria impraticável realizar essa simulação. O método de Monte Carlo consiste em visitar eficientemente uma pequena fração desses estados e atingir rapidamente o equilíbrio em poucos passos e o peso que define como visitar o estado seguinte é dado pela distribuição de Boltzmann <math>e^{\beta(E_\nu-E_\mu)}</math> onde fica claro que quanto mais diferente <math>\nu</math> for de <math>\mu</math> menor a change de fazer a transição <math>\mu\to\mu</math>
+
+Dessa forma impõe-se que no equilíbrio o sistema obedeça a distribuição de Boltzmann, portanto a condição de balanço detalhado dá liberdade na escolha de <math>P(\mu\to\nu)</math> e <math>P(\nu\to\mu)</math> desde que seja satisfeita:
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>\frac{g(\mu)}{g(\nu)}\frac{A(\mu\to\nu)}{A(\nu\to\mu)} = e^{\beta(E_\nu-E_\mu)}</math></div>
+
+Uma possível escolha para <math>A(\mu\to\nu)</math> seria:
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>A(\mu\to\nu)=A_0e^{-\frac{1}{2}\beta(E_\nu-E_\mu)}</math></div>
+
+Como <math>A_0</math> é cancelada na razão entre probabilidades de aceitação temos a liberdade na sua escolha desde que mantenha a probabilidade menor ou igual a um. No modelo de Ising, por exemplo, a maior diferença de energia que se pode obter entre estados é <math>\Delta E = E_\nu-E_\mu = \pm 2zJ</math> o que significa que o maior valor de <math>e^{-\frac{1}{2}\beta(E_\nu-E_\mu)}</math> é justamente <math>e^{\beta zJ}</math>. Assim, para garantir que a probabilidade seja menor ou igual a 1 deve-se escolher <math>A_0 \le e^{-\beta zJ}</math>
+
+Para que o algoritmo seja eficiente deseja-se que a probabilidade de aceitação seja a maior possível, pois do contrário estaríamos utilizando tempo computacional apenas para rejeitar trocas de estado. Portanto queremos que <math>A_0</math> assuma o maior valor possível <math>A_0 = e^{-\beta zJ}</math>, maximizando <math>A(\mu\to\nu)</math>:
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>A(\mu\to\nu)=e^{-\frac{1}{2}\beta(E_\nu-E_\mu+2\beta z J)}</math></div>
+
+Devido a condição de balanço detalhado, essa escolha implica:
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>A(\nu\to\mu)=e^{-\beta z J}</math></div>
+
+Metropolis percebeu que desde que a condição de balanço detalhado seja satisfeita tem-se liberdade na escolha das probabilidades de aceitação. Então ele decidiu atribuir o maior valor possível para a probabilidade de aceitação que tem o maior valor entre as duas, no caso <math>A(\nu\to\mu)</math>, ou seja:
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>A(\nu\to\mu)=1</math></div>
+
+O que implica:
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>A(\mu\to\nu)=e^{-\beta(E_\nu-E_\mu)}</math></div>
+
+Dessa forma a transição de estados sempre ocorre se <math>E_\nu < E_\mu</math> ou seja <math>\Delta E <= 0</math> mas pode ou não ocorrer caso seja <math>\Delta E > 0</math> com uma probabilidade dada por <math>e^{-\beta(E_\nu-E_\mu)}</math>. Em suma:
+
+<math>
+A(\mu\to\nu) = \begin{cases}
+e^{-\beta(E_\nu-E_\mu)} \ \mbox{ se } \ E_\nu - E_\mu > 0\\
+1 \  \mbox{ caso contrario}\\
+\end{cases}
+</math>
+
+===Gás de rede===
+
+Para obedecer a condição de conservação da magnetização não é permitido alterar um spin individualmente (ou um número ímpar de spins). Uma maneira de tratar a dinâmica desse sistema foi proposta por Kawasaki e consiste em simplesmente alternar o estado de spin de um par de 
+partículas que tenham estados de spin oposto, ou seja:
+
+<math>
+\begin{cases}
+\uparrow \uparrow ou \downarrow \downarrow \quad\to\quad \text{nada a fazer} \\
+\uparrow \downarrow \quad\to\quad \downarrow \uparrow\\
+\downarrow \uparrow \quad\to\quad \uparrow \downarrow\\
+\end{cases}
+</math>
+
+É evidente que nesse caso a mudança na magnetização é conservada pois a troca de spins resulta em variação de magnetização nula.
+
+Cada ponto da rede possui <math>z</math> vizinhos e portanto a cada passo de iteração deve-se sortear com qual dos vizinhos será feita uma tentativa de troca de spins. Essa escolha é feita aleatoriamente (uniforme). Uma vez escolhido um vizinho deve-se decidir se a troca deve ser feita ou não. Essa decisão é tomada com base no método de Monte Carlo, em particular, com a probabilidade de aceitação de Metropolis exatamente como exposto na seção acima.
+
+A '''ergodicidade''' é satisfeita pelo sistema pois um passo de Monte Carlo corresponde a uma troca entre vizinhos que numa rede finita pode ser efetuada a partir de outro estado qualquer em número finito de passos
+
+Como já foi mencionado a rede possui <math>N</math> pontos e número de coordenação <math>z</math> o que resulta em <math>\frac{1}{2}zN</math> pares de primeiros vizinhos, portanto, a probabilidade de selecionar um par qualquer é dada por:
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>g(\mu\to\nu) = \frac{1}{\frac{1}{2}zN} = \frac{2}{zN}</math></div>
+
+A probabilidade de seleção <math>g(\nu\to\mu)</math> é a mesma fazendo com que esses termos se cortem na condição de balanço detalhado e permitindo que se aplique a escolha de Metropolis discutida acima sem alterações.
+
+Para efetivamente tomar a decisão sobre a troca entre vizinhos onde <math>\Delta E</math> é necessário especificar como é feito seu cálculo. <math>\Delta E</math> é dado pela seguinte expressão:
+
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;"><math>\Delta E = E_\nu-E_\mu = 2J\left[s_k^\mu\sum_{i\not\in\{k',k\}}s_i^\mu+s_{k'}^\mu\sum_{j\not\in\{k,k'\}}s_j^\mu\right]</math></div>
+
+Seja um ponto da rede <math>k</math> e <math>k'</math> primeiro vizinho de <math>k</math>. Deseja-se calcular a energia de interação entre esse par. A expressão acima apenas diz que deve-somar os produtos do spin de <math>k</math>, <math>(s_k)</math>, com seus primeiros vizinhos <math>s_i</math> excluindo-se da soma tanto <math>k</math> quanto <math>k'</math>. Faz-se o mesmo procedimento para <math>k'</math>, ou seja, soma-se os produtos do spin <math>k'</math>, <math>(s_{k'})</math>, com todos os seus primeiros vizinhos <math>s_j</math> exceto ele mesmo e <math>k</math>. A soma dessas duas quantidades multiplicadas por <math>2J</math> é igual a diferença de energia entre a configuração <math>\mu</math> e a <math>\nu</math>
+
+==Simulação==
+
+Foram simulados três sistemas diferentes os quais são discutidos a seguir. O objetivo das simulações em determinar a tendência do formato de cada interface após vários passos de monte carlo sem verificar rigorosamente se o equilíbrio foi atingido. Uma análise das condições de equilíbrio é discutida na última seção.
+Todas as simulações demandam a geração de muitos números aleatórios por isso optou-se por usar Mersenne Twister que é um algoritmo veloz para geração de números aleatórios.
+
+===Interface linear===
+
+Esse sistema consiste rede quadrada de aresta <math>l</math>. A rede tem inicialmente sua metade inferior completamente populada por partículas. 
+
+Cada ponto da rede é visitado sequencialmente e um dos seus 4 vizinhos é sorteado para que se faça uma tentativa de troca de posição entre o par. Caso a energia do sistema diminua, a troca é feita com probabilidade 1. Caso contrário a troca ocorre com probabilidade dada pelo peso de Boltzmann (algoritmo de Metropolis). 
+
+A primeira condição de contorno refere-se às paredes superior e inferior. A ultima linha de pontos da rede possui spins apontando pra baixo permanentemente assim como a primeira linha de pontos da rede tem-se spins apontando pra cima. Para que essa configuração seja mantida ao longo da simulação, evita-se qualquer tentativa de troca entre pares envolvendo esses pontos. Essa condição de contorno garante que a interface se mantenha fixa, do contrário, ela poderia transitar pela rede. 
+Nas paredes laterais aplica-se condição de contorno periódica onde por exemplo um ponto da rede na coluna <math>l-1</math> pode trocar de lugar com um primeiro vizinho da coluna <math>0</math> e vice-versa. 
+
+Ao iterar pela rede é comum deparar-se com pares de vizinhos que possuem mesma orientação de spin e portanto são ignorados imediatamente pois em nada contribuem para a dinâmica do sistema.
+
+[[Arquivo:cop500iterinstepsof10.gif|frame|center|Interface linear entre sólido e vapor. Cada frame corresponde a 10 passos de Monte Carlo de um total de 500 passos. Primeira simulação com alta temperatura <math>T > T_C</math>. Segunda simução com temperatura intermediária <math>T < T_C</math>. Terceira simulação com baixa temperatura <math>T \ll T_C</math>]]
+
+Como observado, a alta temperatura recai-se no regime homogêneo em que a alternativa mais favorável ao sistema para minizar a sua energia é distribuir os spins up (partículas) uniformemente pela rede.
+A uma temperatura abaixo da crítica percebe-se a formação de uma interface persistente entre a região inferior com densidade preferencial <math>\rho_+</math> e a superior com densidade preferencial <math>\rho_-</math> em coexistência.
+Ao diminuir ainda mais a temperatura o efeito fica mais acentuado, ou seja, a interface é menos deformada em relação ao caso anterior.
+
+===Interface circular===
+
+Nessa sistema excluem-se as condições fixas nas paredes superior e inferior e atribui-se a elas as mesmas condições das paredes laterais, ou seja, condições de contorno periódicas onde, por exemplo, uma partícula na linha <math>l-1</math> pode trocar de lugar com sua primeira vizinha da linha <math>0</math>
+Como condição inicial posiciona-se as partículas num formato quadrado no centro da rede e observa-se como o formato da interface varia ao longo da simulação. A densidade de partículas é bem menor que no exemplo anterior da interface linear.
+
+[[Arquivo:copSquare500iterinstepsof10.gif|frame|center|Interface circular entre sólido e vapor. Cada frame corresponde a 10 passos de Monte Carlo de um total de 500 passos. Primeira simulação com alta temperatura <math>T > T_C</math>. Segunda simução com temperatura intermediária <math>T < T_C</math>. Terceira simulação com baixa temperatura <math>T \ll T_C</math>]]
+
+A interface é energeticamente custosa pois para cada par de spins antialinhados o sistema aumenta de energia por um fator 2J e como na rede quadrada um spin da interface possui 3 vizinhos antialinhados, sistema aumenta de energia por um fator 6J. Portanto fisicamente espera-se que o sistema evolua de tal forma a minimizar a extensão da sua interface, minimizando sua tensão superficial. No caso simulado espera-se que um domínio circular seja gerado pois o círculo é a forma geométrica que possui menor perímetro. No entanto, como a simulação demonstra, mesmo pra baixas temperaturas a forma nunca é perfeitamente circular e isso se deve ao tamanho finito da rede o faz com que seu formato (da rede) influencie o formato da interface.
+
+A animação abaixo ilustra o mesmo processo mas com menos frames por segundo permitindo acompanhar detalhes da dinâmica do sistema.
+
+[[Arquivo:copSquare100-iloveimg-compressed.gif|frame|center|Animação com 100 passos de Monte Carlo. Primeira simulação com alta temperatura <math>T > T_C</math>. Segunda simução com temperatura intermediária <math>T < T_C</math>. Terceira simulação com baixa temperatura <math>T \ll T_C</math>]]
+
+===Interface esférica===
+
+A simulação da interface esférica é uma extensão direita da simulação da interface circular apenas adicionando mais uma dimensão. Cada ponto da rede agora possui 6 vizinhos ao invés de 4. Observa-se os mesmos efeitos de redução de tensão superficial pela deformação do cubo em uma região aproximadamente esférica quando a temperatura é menor que a temperatura crítica. Acima da a temperatura crítica a densidade fica homogênea como esperado.
+
+[[Arquivo:cop3D500instepsof10.gif|frame|center|Interface esférica entre sólido e vapor. Cada frame corresponde a 10 passos de Monte Carlo de um total de 500 passos. Primeira simulação com alta temperatura <math>T > T_C</math>. Segunda simução com temperatura intermediária <math>T < T_C</math>. Terceira simulação com baixa temperatura <math>T \ll T_C</math>]]
+
+A mesma simulação com menos partículas, vista mais distante e com uma pequena diferença na quantidade de passos.
+
+[[Arquivo:cop3D250instepsof5round.gif|frame|center|Interface esférica entre sólido e vapor. Cada frame corresponde a 5 passos de Monte Carlo de um total de 250 passos. Primeira simulação com alta temperatura <math>T > T_C</math>. Segunda simução com temperatura intermediária <math>T < T_C</math>. Terceira simulação com baixa temperatura <math>T \ll T_C</math>]]
+
+Introduzindo interações entre segundos vizinhos é possível reproduzir formatos de cristais cúbicos como por exemplo o cristal de face centrada ou de corpo centrado.<ref name=newman/>
+
+==Equilíbrio==
+
+==Códigos==
+
+[https://github.com/diogofriggo/metcompc/blob/master/Trabalho2/COP/COP/main.c Conservação de parâmetro de ordem - Interface linear]
+
+[https://github.com/diogofriggo/metcompc/blob/master/Trabalho2/COPSquare/COPSquare/main.c Conservação de parâmetro de ordem - Interface circular]
+
+[https://github.com/diogofriggo/metcompc/blob/master/Trabalho2/COP3D/COP3D/main.c Conservação de parâmetro de ordem - Interface esférica]
+
+==Bibliografia==
+<references/>
